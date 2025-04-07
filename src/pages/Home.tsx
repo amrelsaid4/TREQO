@@ -22,6 +22,10 @@ import Hero from "../components/Hero";
 import sample1 from "../assets/images/sample-1.jpg";
 import sample2 from "../assets/images/sample-2.jpg";
 import sample3 from "../assets/images/sample-3.jpg";
+import CategoriesSection from "../components/CategoriesSection";
+
+
+
 
 const slides = [
   {
@@ -419,122 +423,10 @@ const Home: React.FC = () => {
       </section>
 
       {/* Categories */}
-      <section className="py-12 bg-gray-50">
-  <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-    {/* Category Filters */}
-    <div className="flex flex-wrap justify-center gap-4 mb-10">
-      <button className="px-6 py-2 bg-[#6f9a37] text-white rounded-full font-medium">
-        All Products
-      </button>
-      <button className="px-6 py-2 bg-white text-gray-800 rounded-full font-medium hover:bg-gray-100">
-        Clothing
-      </button>
-      <button className="px-6 py-2 bg-white text-gray-800 rounded-full font-medium hover:bg-gray-100">
-        Women
-      </button>
-      <button className="px-6 py-2 bg-white text-gray-800 rounded-full font-medium hover:bg-gray-100">
-        Men
-      </button>
-      <button className="px-6 py-2 bg-white text-gray-800 rounded-full font-medium hover:bg-gray-100">
-        Electronics
-      </button>
-      <button className="px-6 py-2 bg-white text-gray-800 rounded-full font-medium hover:bg-gray-100">
-        Accessories
-      </button>
-    </div>
-
-    {/* Products Grid */}
-    <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
-      {/* Product 1 */}
-      <div className="bg-white rounded-lg overflow-hidden shadow-md hover:shadow-lg transition-shadow">
-        <div className="relative">
-          <img 
-            src="/assets/images/products/product1.jpg"
-            alt="Nom finibus lectus ac"
-            className="w-full h-48 object-cover"
-          />
-          <span className="absolute top-3 right-3 bg-red-500 text-white text-xs font-bold px-2 py-1 rounded">
-            -20%
-          </span>
-        </div>
-        <div className="p-4">
-          <h3 className="text-gray-900 font-medium mb-1 line-clamp-2">Nom finibus lectus ac...</h3>
-          <div className="flex items-center gap-2">
-            <span className="text-[#6f9a37] font-bold">$19.12</span>
-            <span className="text-gray-400 text-sm line-through">$29.99</span>
-          </div>
-        </div>
-      </div>
-
-      {/* Product 2 */}
-      <div className="bg-white rounded-lg overflow-hidden shadow-md hover:shadow-lg transition-shadow">
-        <div className="relative">
-          <img 
-            src="/assets/images/products/product2.jpg"
-            alt="consequat tincidunt"
-            className="w-full h-48 object-cover"
-          />
-          <span className="absolute top-3 right-3 bg-red-500 text-white text-xs font-bold px-2 py-1 rounded">
-            -20%
-          </span>
-        </div>
-        <div className="p-4">
-          <h3 className="text-gray-900 font-medium mb-1 line-clamp-2">consequat tincidunt</h3>
-          <div className="flex items-center gap-2">
-            <span className="text-[#6f9a37] font-bold">$28.72</span>
-            <span className="text-gray-400 text-sm line-through">$35.90</span>
-          </div>
-        </div>
-      </div>
-
-      {/* Product 3 */}
-      <div className="bg-white rounded-lg overflow-hidden shadow-md hover:shadow-lg transition-shadow">
-        <div className="relative">
-          <img 
-            src="/assets/images/products/product3.jpg"
-            alt="Lorem ipsum dolor sit"
-            className="w-full h-48 object-cover"
-          />
-          <span className="absolute top-3 right-3 bg-red-500 text-white text-xs font-bold px-2 py-1 rounded">
-            -15%
-          </span>
-        </div>
-        <div className="p-4">
-          <h3 className="text-gray-900 font-medium mb-1 line-clamp-2">Lorem ipsum dolor sit...</h3>
-          <div className="flex items-center gap-2">
-            <span className="text-[#6f9a37] font-bold">$24.65</span>
-            <span className="text-gray-400 text-sm line-through">$29.90</span>
-          </div>
-        </div>
-      </div>
-
-      {/* Product 4 */}
-      <div className="bg-white rounded-lg overflow-hidden shadow-md hover:shadow-lg transition-shadow">
-        <div className="relative">
-          <img 
-            src="/assets/images/products/product4.jpg"
-            alt="consectetur adipiscing"
-            className="w-full h-48 object-cover"
-          />
-        </div>
-        <div className="p-4">
-          <h3 className="text-gray-900 font-medium mb-1 line-clamp-2">consectetur adipiscing...</h3>
-          <div className="flex items-center">
-            <span className="text-[#6f9a37] font-bold">$29.00</span>
-          </div>
-        </div>
-      </div>
-    </div>
-
-    {/* View More Button */}
-    <div className="text-center mt-10">
-      <button className="px-8 py-3 border border-[#6f9a37] text-[#6f9a37] font-medium rounded-lg hover:bg-[#6f9a37] hover:text-white transition-colors">
-        View More Products
-      </button>
-    </div>
-  </div>
-</section>
-
+      <CategoriesSection 
+  products={featuredProducts} 
+  loading={loading} 
+/>
       {/* Newsletter */}
       <section className="bg-[#6f9a37] py-8 md:py-10">
   <div className="max-w-3xl mx-auto px-4">
