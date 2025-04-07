@@ -1,95 +1,97 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { motion } from 'framer-motion';
+import { useNavigate } from 'react-router-dom';
+import QuickViewModal from './QuickViewModal'; // ستحتاج لإنشاء هذا المكون
 
-import product1 from '../assets/images/products/product1.jpg';
-import product2 from '../assets/images/products/product2.jpg';
-import product3 from '../assets/images/products/product3.jpg';
-import product4 from '../assets/images/products/product4.jpg';
-import product5 from '../assets/images/products/product5.jpg';
-import product6 from '../assets/images/products/product6.jpg';
-
-type Product = {
+// تعريف نوع المنتج مع السماح بأن يكون rating اختياريًا
+interface Product {
   id: number;
-  name: string;
+  title: string;
   price: number;
   originalPrice?: number;
-  image: string;
+  description: string;
   category: string;
+  image: string;
+  rating?: {
+    rate: number;
+    count: number;
+  };
   isNew?: boolean;
-};
+}
 
 const TopProducts: React.FC = () => {
   const [activeTab, setActiveTab] = useState<'featured' | 'bestsellers' | 'new'>('featured');
+  const [products, setProducts] = useState<Product[]>([]);
+  const [loading, setLoading] = useState(true);
+  const [selectedProduct, setSelectedProduct] = useState<Product | null>(null);
+  const [showQuickView, setShowQuickView] = useState(false);
+  const navigate = useNavigate();
 
-  const products: Record<string, Product[]> = {
-    featured: [
-      {
-        id: 1,
-        name: 'NUTRITIONES TEXTURE GO...',
-        price: 19.12,
-        originalPrice: 29.90,
-        image: product1,
-        category: 'clothing'
-      },
-      {
-        id: 2,
-        name: 'Lorem ipsum dolor sit...',
-        price: 24.65,
-        originalPrice: 29.90,
-        image: product2,
-        category: 'women'
+  useEffect(() => {
+    // هنا يمكنك جلب البيانات من API أو من الملف المحلي
+    const fetchProducts = async () => {
+      try {
+        // هذا مثال - استبدله بجلب البيانات الفعلي من GitHub
+        const response = await fetch('https://fakestoreapi.com/products');
+        const data = await response.json();
+        
+        // تعديل البيانات لتتناسب مع هيكلنا
+        const formattedProducts = data.map((product: any) => ({
+          id: product.id,
+          title: product.title,
+          price: product.price,
+          originalPrice: Math.round(product.price * (1 + Math.random() * 0.3)), // سعر عشوائي أعلى للسعر الأصلي
+          description: product.description,
+          category: product.category,
+          image: product.image,
+          rating: product.rating,
+          isNew: Math.random() > 0.5 // بعض المنتجات ستكون جديدة
+        }));
+        
+        setProducts(formattedProducts);
+        setLoading(false);
+      } catch (error) {
+        console.error('Error fetching products:', error);
+        setLoading(false);
       }
-    ],
-    bestsellers: [
-      {
-        id: 3,
-        name: 'consectetur adipiscing...',
-        price: 29.00,
-        image: product3,
-        category: 'accessories'
-      },
-      {
-        id: 4,
-        name: 'Seid cursus ante...',
-        price: 28.10,
-        originalPrice: 29.90,
-        image: product4,
-        category: 'clothing'
-      }
-    ],
-    new: [
-      {
-        id: 5,
-        name: 'Mauris sed sapien ac urna',
-        price: 9.52,
-        originalPrice: 11.00,
-        image: product5,
-        category: 'women',
-        isNew: true
-      },
-      {
-        id: 6,
-        name: 'Aenean quis sem loculis',
-        price: 11.90,
-        image: product6,
-        category: 'accessories',
-        isNew: true
-      }
-    ]
+    };
+    
+    fetchProducts();
+  }, []);
+
+  // تصنيف المنتجات
+  const categorizedProducts = {
+    featured: products.slice(0, 4), // أول 4 منتجات كمميزة
+    bestsellers: products.slice(4, 8).map(p => ({ ...p, rating: { ...p.rating!, rate: 4.5 } })), // منتجات ذات تقييم عال
+    new: products.filter(p => p.isNew).slice(0, 4) // المنتجات الجديدة
   };
+
+  const handleAddToCart = (product: Product) => {
+    // هنا يمكنك إضافة المنتج إلى سلة التسوق
+    console.log('Added to cart:', product);
+    // يمكنك استخدام Redux أو Context لإدارة حالة السلة
+  };
+
+  const handleQuickView = (product: Product) => {
+    setSelectedProduct(product);
+    setShowQuickView(true);
+  };
+
+  if (loading) {
+    return <div className="text-center py-12">Loading products...</div>;
+  }
 
   return (
     <section className="py-12 px-4 bg-white">
       <div className="container mx-auto">
         <h2 className="text-3xl font-bold text-center mb-8">Top Products</h2>
 
-       
         {/* Tabs */}
-        <div className="flex justify-center mb-8">
+        <div className="flex justify-center mb-8 flex-wrap">
           <button
             onClick={() => setActiveTab('featured')}
             className={`px-6 py-2 font-medium focus:outline-none ${
-              activeTab === 'featured' ? 'text-green-600 ' : 'text-gray-600'
+              activeTab === 'featured' ? 'text-green-600 border-b-2 border-green-600' : 'text-gray-600'
             }`}
           >
             Featured Products
@@ -97,7 +99,7 @@ const TopProducts: React.FC = () => {
           <button
             onClick={() => setActiveTab('bestsellers')}
             className={`px-6 py-2 font-medium focus:outline-none ${
-              activeTab === 'bestsellers' ? 'text-green-600 ' : 'text-gray-600'
+              activeTab === 'bestsellers' ? 'text-green-600 border-b-2 border-green-600' : 'text-gray-600'
             }`}
           >
             Best Sellers
@@ -105,7 +107,7 @@ const TopProducts: React.FC = () => {
           <button
             onClick={() => setActiveTab('new')}
             className={`px-6 py-2 font-medium focus:outline-none ${
-              activeTab === 'new' ? 'text-green-600 ' : 'text-gray-600'
+              activeTab === 'new' ? 'text-green-600 border-b-2 border-green-600' : 'text-gray-600'
             }`}
           >
             New Arrivals
@@ -114,12 +116,12 @@ const TopProducts: React.FC = () => {
 
         {/* Products Grid */}
         <motion.div 
-          className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6"
+          className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5 gap-6"
           initial={{ opacity: 0, y: 20 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.5 }}
         >
-          {products[activeTab].map((product) => (
+          {categorizedProducts[activeTab].map((product) => (
             <div
               key={product.id}
               className="group relative bg-white rounded-xl overflow-hidden shadow-md hover:shadow-xl transition-all duration-300"
@@ -128,8 +130,8 @@ const TopProducts: React.FC = () => {
               <div className="relative h-64 overflow-hidden">
                 <img
                   src={product.image}
-                  alt={product.name}
-                  className="w-full h-full object-cover transition-transform duration-500 group-hover:scale-105"
+                  alt={product.title}
+                  className="w-full h-full object-contain transition-transform duration-500 group-hover:scale-105 p-4"
                 />
                 {product.isNew && (
                   <span className="absolute top-4 right-4 bg-green-600 text-white px-2 py-1 text-xs rounded-full uppercase tracking-wide">
@@ -138,10 +140,16 @@ const TopProducts: React.FC = () => {
                 )}
                 {/* Hover Buttons */}
                 <div className="absolute inset-0 flex items-center justify-center gap-3 opacity-0 group-hover:opacity-100 transition-opacity duration-300 bg-black/30">
-                  <button className="bg-white text-green-600 px-4 py-2 rounded-full text-sm font-medium hover:bg-gray-100 transition">
+                  <button 
+                    onClick={() => handleQuickView(product)}
+                    className="bg-white text-green-600 px-4 py-2 rounded-full text-sm font-medium hover:bg-gray-100 transition"
+                  >
                     Quick View
                   </button>
-                  <button className="bg-green-600 text-white px-4 py-2 rounded-full text-sm font-medium hover:bg-green-700 transition">
+                  <button 
+                    onClick={() => handleAddToCart(product)}
+                    className="bg-green-600 text-white px-4 py-2 rounded-full text-sm font-medium hover:bg-green-700 transition"
+                  >
                     Add to Cart
                   </button>
                 </div>
@@ -149,7 +157,7 @@ const TopProducts: React.FC = () => {
 
               {/* Product Info */}
               <div className="p-4">
-                <h3 className="text-base font-semibold truncate text-gray-800">{product.name}</h3>
+                <h3 className="text-base font-semibold truncate text-gray-800">{product.title}</h3>
                 <div className="flex items-center mt-2">
                   <span className="text-green-600 font-bold">${product.price.toFixed(2)}</span>
                   {product.originalPrice && (
@@ -161,6 +169,23 @@ const TopProducts: React.FC = () => {
                     </>
                   )}
                 </div>
+                {product.rating && (
+                  <div className="flex items-center mt-1">
+                    <div className="flex text-yellow-400">
+                      {[...Array(5)].map((_, i) => (
+                        <svg
+                          key={i}
+                          className={`w-4 h-4 fill-current ${i < Math.floor(product.rating.rate) ? 'text-yellow-400' : 'text-gray-300'}`}
+                          xmlns="http://www.w3.org/2000/svg"
+                          viewBox="0 0 20 20"
+                        >
+                          <path d="M10 15l-5.878 3.09 1.123-6.545L.489 6.91l6.572-.955L10 0l2.939 5.955 6.572.955-4.756 4.635 1.123 6.545z" />
+                        </svg>
+                      ))}
+                    </div>
+                    <span className="text-gray-500 text-xs ml-1">({product.rating.count})</span>
+                  </div>
+                )}
               </div>
             </div>
           ))}
@@ -168,14 +193,26 @@ const TopProducts: React.FC = () => {
 
         {/* Shop Now Button */}
         <div className="text-center mt-12">
-          <button className="bg-green-600 text-white px-8 py-3 rounded-full font-medium hover:bg-green-700 transition">
+          <button 
+            onClick={() => navigate('/products')}
+            className="bg-green-600 text-white px-8 py-3 rounded-full font-medium hover:bg-green-700 transition"
+          >
             Shop Now
           </button>
         </div>
       </div>
+
+      {/* Quick View Modal */}
+      {showQuickView && selectedProduct && (
+        <QuickViewModal 
+          product={selectedProduct}
+          onClose={() => setShowQuickView(false)}
+          onAddToCart={handleAddToCart}
+        />
+      )}
     </section>
   );
 };
 
 export default TopProducts;
-
+                                                                                        

@@ -300,17 +300,12 @@ const Home: React.FC = () => {
                   key={index}
                   className="relative overflow-hidden group rounded-lg h-[400px] lg:h-[500px]"
                 >
-                  {/* صورة الخلفية */}
                   <img
                     src={item.image}
                     alt={item.title}
                     className="w-full h-full object-cover transition-transform duration-700 group-hover:scale-105"
                   />
-
-                  {/* التدرج الأخضر من تحت لفوق */}
                   <div className="absolute inset-0 bg-transparent group-hover:bg-gradient-to-t from-[#6f9a37]/80 to-transparent transition-all duration-700 ease-in-out" />
-
-                  {/* النص والزرار */}
                   <div className="absolute bottom-6 w-full text-center px-4 transform translate-y-10 opacity-0 group-hover:translate-y-0 group-hover:opacity-100 transition-all duration-700 ease-in-out">
                     <h3 className="text-lg font-bold text-white transition duration-300">
                       {item.title}
@@ -333,42 +328,41 @@ const Home: React.FC = () => {
 
       {/* Top Products Section */}
       <section className="py-16 bg-white">
-  <div className="max-w-7xl mx-auto px-4">
-    <Swiper
-      modules={[Autoplay, Navigation, Pagination]}
-      spaceBetween={30}
-      slidesPerView={5}
-      centeredSlides={true}
-      navigation
-      autoplay={{
-        delay: 3000,
-        disableOnInteraction: false,
-      }}
-      loop={true}
-      breakpoints={{
-        320: { slidesPerView: 3, spaceBetween: 20 },
-        768: { slidesPerView: 5, spaceBetween: 30 },
-      }}
-    >
-      {[1,2,3,4,5,6,7,8].map((num) => (
-        <SwiperSlide key={num}>
-          <div className="relative group h-40"> {/* زيادة ارتفاع الحاوية */}
-            <img
-              src={`/src/assets/images/brand/${num}.jpg`}
-              alt={`Brand ${num}`}
-              className={`w-full h-full object-contain transition-all duration-300 ${
-                num > 5 ? 'opacity-30 filter grayscale' : 'opacity-70'
-              } group-hover:opacity-100 group-hover:grayscale-0`}
-            />
-            
-          </div>
-        </SwiperSlide>
-      ))}
-    </Swiper>
-  </div>
-
-  
-</section>
+        <div className="max-w-7xl mx-auto px-4">
+          <Swiper
+            modules={[Autoplay, Navigation, Pagination]}
+            spaceBetween={30}
+            slidesPerView={5}
+            centeredSlides={true}
+            navigation
+            autoplay={{
+              delay: 3000,
+              disableOnInteraction: false,
+            }}
+            loop={true}
+            breakpoints={{
+              320: { slidesPerView: 3, spaceBetween: 20 },
+              768: { slidesPerView: 5, spaceBetween: 30 },
+            }}
+          >
+            {[1, 2, 3, 4, 5, 6, 7, 8].map((num) => (
+              <SwiperSlide key={num}>
+                <div className="relative group h-40">
+                  {" "}
+                  {/* زيادة ارتفاع الحاوية */}
+                  <img
+                    src={`/src/assets/images/brand/${num}.jpg`}
+                    alt={`Brand ${num}`}
+                    className={`w-full h-full object-contain transition-all duration-300 ${
+                      num > 5 ? "opacity-30 filter grayscale" : "opacity-70"
+                    } group-hover:opacity-100 group-hover:grayscale-0`}
+                  />
+                </div>
+              </SwiperSlide>
+            ))}
+          </Swiper>
+        </div>
+      </section>
 
       {/* Testimonials */}
 
@@ -425,82 +419,146 @@ const Home: React.FC = () => {
       </section>
 
       {/* Categories */}
-      <section className="bg-gray-50 py-16">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-          <h2 className="text-3xl font-bold mb-8 text-center">Categories</h2>
-          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
-            <Link
-              to="/products?category=electronics"
-              className="bg-white rounded-lg shadow-md p-6 text-center hover:shadow-lg transition-shadow"
-            >
-              <h3 className="text-xl font-semibold mb-2 text-primary-600">
-                Electronics
-              </h3>
-              <p className="text-primary-600/80">
-                Explore the latest electronics
-              </p>
-            </Link>
-            <Link
-              to="/products?category=jewelery"
-              className="bg-white rounded-lg shadow-md p-6 text-center hover:shadow-lg transition-shadow"
-            >
-              <h3 className="text-xl font-semibold mb-2 text-primary-600">
-                Jewelery
-              </h3>
-              <p className="text-primary-600/80">Discover beautiful jewelry</p>
-            </Link>
-            <Link
-              to="/products?category=men's clothing"
-              className="bg-white rounded-lg shadow-md p-6 text-center hover:shadow-lg transition-shadow"
-            >
-              <h3 className="text-xl font-semibold mb-2 text-primary-600">
-                Men's Clothing
-              </h3>
-              <p className="text-primary-600/80">
-                Find the perfect men's clothing
-              </p>
-            </Link>
-            <Link
-              to="/products?category=women's clothing"
-              className="bg-white rounded-lg shadow-md p-6 text-center hover:shadow-lg transition-shadow"
-            >
-              <h3 className="text-xl font-semibold mb-2 text-primary-600">
-                Women's Clothing
-              </h3>
-              <p className="text-primary-600/80">
-                Discover the latest women's fashion
-              </p>
-            </Link>
+      <section className="py-12 bg-gray-50">
+  <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+    {/* Category Filters */}
+    <div className="flex flex-wrap justify-center gap-4 mb-10">
+      <button className="px-6 py-2 bg-[#6f9a37] text-white rounded-full font-medium">
+        All Products
+      </button>
+      <button className="px-6 py-2 bg-white text-gray-800 rounded-full font-medium hover:bg-gray-100">
+        Clothing
+      </button>
+      <button className="px-6 py-2 bg-white text-gray-800 rounded-full font-medium hover:bg-gray-100">
+        Women
+      </button>
+      <button className="px-6 py-2 bg-white text-gray-800 rounded-full font-medium hover:bg-gray-100">
+        Men
+      </button>
+      <button className="px-6 py-2 bg-white text-gray-800 rounded-full font-medium hover:bg-gray-100">
+        Electronics
+      </button>
+      <button className="px-6 py-2 bg-white text-gray-800 rounded-full font-medium hover:bg-gray-100">
+        Accessories
+      </button>
+    </div>
+
+    {/* Products Grid */}
+    <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
+      {/* Product 1 */}
+      <div className="bg-white rounded-lg overflow-hidden shadow-md hover:shadow-lg transition-shadow">
+        <div className="relative">
+          <img 
+            src="/assets/images/products/product1.jpg"
+            alt="Nom finibus lectus ac"
+            className="w-full h-48 object-cover"
+          />
+          <span className="absolute top-3 right-3 bg-red-500 text-white text-xs font-bold px-2 py-1 rounded">
+            -20%
+          </span>
+        </div>
+        <div className="p-4">
+          <h3 className="text-gray-900 font-medium mb-1 line-clamp-2">Nom finibus lectus ac...</h3>
+          <div className="flex items-center gap-2">
+            <span className="text-[#6f9a37] font-bold">$19.12</span>
+            <span className="text-gray-400 text-sm line-through">$29.99</span>
           </div>
         </div>
-      </section>
+      </div>
+
+      {/* Product 2 */}
+      <div className="bg-white rounded-lg overflow-hidden shadow-md hover:shadow-lg transition-shadow">
+        <div className="relative">
+          <img 
+            src="/assets/images/products/product2.jpg"
+            alt="consequat tincidunt"
+            className="w-full h-48 object-cover"
+          />
+          <span className="absolute top-3 right-3 bg-red-500 text-white text-xs font-bold px-2 py-1 rounded">
+            -20%
+          </span>
+        </div>
+        <div className="p-4">
+          <h3 className="text-gray-900 font-medium mb-1 line-clamp-2">consequat tincidunt</h3>
+          <div className="flex items-center gap-2">
+            <span className="text-[#6f9a37] font-bold">$28.72</span>
+            <span className="text-gray-400 text-sm line-through">$35.90</span>
+          </div>
+        </div>
+      </div>
+
+      {/* Product 3 */}
+      <div className="bg-white rounded-lg overflow-hidden shadow-md hover:shadow-lg transition-shadow">
+        <div className="relative">
+          <img 
+            src="/assets/images/products/product3.jpg"
+            alt="Lorem ipsum dolor sit"
+            className="w-full h-48 object-cover"
+          />
+          <span className="absolute top-3 right-3 bg-red-500 text-white text-xs font-bold px-2 py-1 rounded">
+            -15%
+          </span>
+        </div>
+        <div className="p-4">
+          <h3 className="text-gray-900 font-medium mb-1 line-clamp-2">Lorem ipsum dolor sit...</h3>
+          <div className="flex items-center gap-2">
+            <span className="text-[#6f9a37] font-bold">$24.65</span>
+            <span className="text-gray-400 text-sm line-through">$29.90</span>
+          </div>
+        </div>
+      </div>
+
+      {/* Product 4 */}
+      <div className="bg-white rounded-lg overflow-hidden shadow-md hover:shadow-lg transition-shadow">
+        <div className="relative">
+          <img 
+            src="/assets/images/products/product4.jpg"
+            alt="consectetur adipiscing"
+            className="w-full h-48 object-cover"
+          />
+        </div>
+        <div className="p-4">
+          <h3 className="text-gray-900 font-medium mb-1 line-clamp-2">consectetur adipiscing...</h3>
+          <div className="flex items-center">
+            <span className="text-[#6f9a37] font-bold">$29.00</span>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    {/* View More Button */}
+    <div className="text-center mt-10">
+      <button className="px-8 py-3 border border-[#6f9a37] text-[#6f9a37] font-medium rounded-lg hover:bg-[#6f9a37] hover:text-white transition-colors">
+        View More Products
+      </button>
+    </div>
+  </div>
+</section>
 
       {/* Newsletter */}
-      <section className="py-16">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-          <div className="bg-primary-600 rounded-lg p-8 text-center text-white">
-            <h2 className="text-3xl font-bold mb-4">
-              Subscribe to Our Newsletter
-            </h2>
-            <p className="text-lg mb-6">Get the latest updates and offers</p>
-            <form className="max-w-md mx-auto">
-              <div className="flex gap-4">
-                <input
-                  type="email"
-                  placeholder="Enter your email"
-                  className="flex-1 px-4 py-2 rounded-lg text-gray-900 focus:outline-none focus:ring-2 focus:ring-white"
-                />
-                <button
-                  type="submit"
-                  className="bg-white text-primary-600 px-6 py-2 rounded-lg font-semibold hover:bg-gray-100 transition-colors"
-                >
-                  Subscribe
-                </button>
-              </div>
-            </form>
-          </div>
+      <section className="bg-[#6f9a37] py-8 md:py-10">
+  <div className="max-w-3xl mx-auto px-4">
+    <div className="text-center text-white">
+      <h2 className="text-xl md:text-2xl font-medium mb-1 md:mb-2">Subscribe For The Newsletter</h2>
+      <p className="text-sm md:text-base text-gray-100 mb-4 md:mb-6">Words To Get Latest Update (Sign Up For Free)</p>
+      <form className="max-w-xs mx-auto">
+        <div className="flex flex-col sm:flex-row gap-2">
+          <input
+            type="email"
+            placeholder="Your email address"
+            className="flex-1 px-3 py-1.5 md:px-4 md:py-2 rounded-sm text-sm text-gray-900 focus:outline-none"
+          />
+          <button
+            type="submit"
+            className="bg-white text-[#6f9a37] px-4 py-1.5 md:px-5 md:py-2 rounded-sm text-sm font-medium hover:bg-gray-50 transition-colors"
+          >
+            Subscribe
+          </button>
         </div>
-      </section>
+      </form>
+    </div>
+  </div>
+</section>
     </div>
   );
 };

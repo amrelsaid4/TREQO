@@ -7,11 +7,11 @@ import LinkedInIcon from '@mui/icons-material/LinkedIn';
 
 const Footer: React.FC = () => {
   return (
-    <footer className="bg-white dark:bg-dark-800 pt-12 pb-8 transition-colors duration-200">
+    <footer className="bg-gray-50 pt-12 pb-8 transition-colors duration-200">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div className="grid grid-cols-1 md:grid-cols-4 gap-8">
           <div className="animate-fade-in">
-            <h3 className="text-lg font-semibold text-gray-900 dark:text-gray-100 mb-4">
+            <h3 className="text-lg font-semibold text-gray-900  mb-4">
               TREQO
             </h3>
             <p className="text-gray-600 dark:text-gray-400">
@@ -20,14 +20,14 @@ const Footer: React.FC = () => {
           </div>
 
           <div className="animate-fade-in [animation-delay:200ms]">
-            <h3 className="text-lg font-semibold text-gray-900 dark:text-gray-100 mb-4">
+            <h3 className="text-lg font-semibold text-gray-900  mb-4">
               Quick Links
             </h3>
             <ul className="space-y-2">
               <li>
                 <Link
                   to="/products"
-                  className="text-gray-600 dark:text-gray-400 hover:text-primary-600 dark:hover:text-primary-400 transition-colors"
+                  className="text-gray-400 hover:text-primary-600 dark:hover:text-primary-400 transition-colors"
                 >
                   Products
                 </Link>
@@ -35,7 +35,7 @@ const Footer: React.FC = () => {
               <li>
                 <Link
                   to="/about"
-                  className="text-gray-600 dark:text-gray-400 hover:text-primary-600 dark:hover:text-primary-400 transition-colors"
+                  className="text-gray-400 hover:text-primary-600 dark:hover:text-primary-400 transition-colors"
                 >
                   About
                 </Link>
@@ -43,7 +43,7 @@ const Footer: React.FC = () => {
               <li>
                 <Link
                   to="/contact"
-                  className="text-gray-600 dark:text-gray-400 hover:text-primary-600 dark:hover:text-primary-400 transition-colors"
+                  className="text-gray-400 hover:text-primary-600 dark:hover:text-primary-400 transition-colors"
                 >
                   Contact
                 </Link>
@@ -63,7 +63,7 @@ const Footer: React.FC = () => {
           </div>
 
           <div className="animate-fade-in [animation-delay:600ms]">
-            <h3 className="text-lg font-semibold text-gray-900 dark:text-gray-100 mb-4">
+            <h3 className="text-lg font-semibold text-gray-900  mb-4">
               Follow Us
             </h3>
             <div className="flex space-x-4">

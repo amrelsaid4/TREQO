@@ -1,7 +1,6 @@
 import React from 'react';
 import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
 import { Provider } from 'react-redux';
-import { ThemeProvider } from './context/ThemeContext';
 import { store } from './store';
 import Navbar from './components/Navbar';
 import Footer from './components/Footer';
@@ -16,9 +15,9 @@ import Contact from './pages/Contact';
 const App: React.FC = () => {
   return (
     <Provider store={store}>
-      <ThemeProvider>
+      
         <Router>
-          <div className="min-h-screen flex flex-col bg-gray-50 dark:bg-dark-900 transition-colors duration-200">
+          <div className="min-h-screen flex flex-col bg-gray-50 transition-colors duration-200">
             <Navbar />
             <main className="flex-grow">
               <Routes>
@@ -34,7 +33,6 @@ const App: React.FC = () => {
             <Footer />
           </div>
         </Router>
-      </ThemeProvider>
     </Provider>
   );
 };

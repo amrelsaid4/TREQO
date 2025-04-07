@@ -137,7 +137,7 @@ const Navbar: React.FC = () => {
                 >
                   <Link
                     to={`/${key.toLowerCase()}`}
-                    className={`text-gray-700 hover:text-[#6f9a37;] py-8 ${
+                    className={`text-gray-700 hover:text-[#6f9a37] py-8 ${
                       activeMenu === key ? 'text-[#6f9a37;]' : ''
                     }`}
                   >

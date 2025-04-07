@@ -3,7 +3,7 @@ export interface Product {
   title: string;
   description: string;
   price: number;
-  oldPrice?: number;
+  originalPrice?: number; // خليها موجودة هنا بدل `oldPrice`
   discount?: number;
   image: string;
   category: string;
@@ -13,6 +13,8 @@ export interface Product {
     count: number;
   };
 }
+
+
 
 export interface CartItem extends Product {
   quantity: number;
