@@ -18,15 +18,16 @@ const ProductCard: React.FC<ProductCardProps> = ({
   onAddToCart,
 }) => {
   return (
-    <div className="bg-white rounded-2xl overflow-hidden shadow-md hover:shadow-lg transition-shadow group relative">
+    <Link
+      to={`/products/${product.id}`}
+      className="block bg-white rounded-2xl overflow-hidden shadow-md hover:shadow-lg transition-shadow group relative"
+    >
       <div className="relative overflow-hidden">
-        <Link to={`/products/${product.id}`}>
-          <img
-            src={product.image}
-            alt={product.title}
-            className="w-full h-64 object-contain p-4 group-hover:scale-105 transition-transform duration-500"
-          />
-        </Link>
+        <img
+          src={product.image}
+          alt={product.title}
+          className="w-full h-64 object-contain p-4 group-hover:scale-105 transition-transform duration-500"
+        />
 
         {/* Badges */}
         <div className="absolute top-3 left-3 flex gap-2">
@@ -43,9 +44,15 @@ const ProductCard: React.FC<ProductCardProps> = ({
         </div>
 
         {/* Add to Cart Button */}
-        <div className="absolute inset-0 bg-transparent group-hover:bg-gradient-to-t from-[#6f9a37]/80 to-transparent transition-all duration-500 ease-in-out flex items-end justify-center pb-6 ">
+        <div
+          className="absolute inset-0 bg-transparent group-hover:bg-gradient-to-t from-[#6f9a37]/80 to-transparent transition-all duration-500 ease-in-out flex items-end justify-center pb-6"
+          onClick={(e) => e.preventDefault()} // يمنع تحويل اللينك لما تضغط على الزر
+        >
           <button
-            onClick={onAddToCart}
+            onClick={(e) => {
+              e.preventDefault(); // يمنع التنقل
+              onAddToCart?.();
+            }}
             className="w-4/5 text-center transform translate-y-10 opacity-0 group-hover:translate-y-0 group-hover:opacity-100 transition-all duration-500 ease-in-out focus:outline-none"
           >
             <span className="inline-block text-sm font-semibold border-2 border-white px-4 py-2 text-white bg-transparent hover:bg-white hover:text-[#6f9a37] transition-all duration-300 rounded ">
@@ -55,11 +62,9 @@ const ProductCard: React.FC<ProductCardProps> = ({
         </div>
       </div>
       <div className="p-4">
-        <Link to={`/products/${product.id}`}>
-          <h3 className="font-semibold text-gray-900 mb-2 text-center line-clamp-2 group-hover:text-green-700 transition-colors duration-300">
-            {product.title}
-          </h3>
-        </Link>
+        <h3 className="font-semibold text-gray-900 mb-2 text-center line-clamp-2 group-hover:text-green-700 transition-colors duration-300">
+          {product.title}
+        </h3>
 
         {/* Rating */}
         <div className="flex justify-center items-center mb-2">
@@ -89,7 +94,7 @@ const ProductCard: React.FC<ProductCardProps> = ({
           )}
         </div>
       </div>
-    </div>
+    </Link>
   );
 };
 

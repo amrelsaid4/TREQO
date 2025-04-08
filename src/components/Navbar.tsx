@@ -1,24 +1,26 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useCallback } from 'react';
 import { Link } from 'react-router-dom';
 import { useSelector } from 'react-redux';
 import { RootState } from '../store';
 import { Product } from '../types';
+import { fetchProducts } from '../services/api';
 import ShoppingCartIcon from '@mui/icons-material/ShoppingCart';
 import SearchIcon from '@mui/icons-material/Search';
 import PersonOutlineIcon from '@mui/icons-material/PersonOutline';
 import MenuIcon from '@mui/icons-material/Menu';
 import CloseIcon from '@mui/icons-material/Close';
 import LocalOfferIcon from '@mui/icons-material/LocalOffer';
+import { debounce } from '@mui/material';
+
+interface MenuItem {
+  [key: string]: string[] | { [key: string]: string[] } | null;
+}
 
 const announcements = [
   { id: 1, text: "10% OFF on all products! Use code: SALE10", icon: <LocalOfferIcon className="w-4 h-4" /> },
   { id: 2, text: "Free shipping on orders over $500!", icon: <LocalOfferIcon className="w-4 h-4" /> },
   { id: 3, text: "New Summer Collection has arrived!", icon: <LocalOfferIcon className="w-4 h-4" /> }
 ];
-
-type MenuItem = {
-  [key: string]: string[] | { [key: string]: string[] } | null;
-};
 
 const menuItems: MenuItem = {
   Clothing: {
@@ -39,53 +41,55 @@ const Navbar: React.FC = () => {
   const [searchQuery, setSearchQuery] = useState('');
   const [searchResults, setSearchResults] = useState<Product[]>([]);
   const [isSearchOpen, setIsSearchOpen] = useState(false);
+  const [allProducts, setAllProducts] = useState<Product[]>([]);
+  const [isLoading, setIsLoading] = useState(false);
   
   const { items } = useSelector((state: RootState) => state.cart);
   const cartItemsCount = items.length;
-  
-  const dummyProducts: Product[] = [
-    {
-      id: 1,
-      title: "Summer T-Shirt",
-      price: 29.99,
-      description: "Comfortable cotton t-shirt",
-      category: "Men",
-      image: "/images/products/tshirt.jpg",
-      rating: { rate: 4.5, count: 120 },
-      featured: true
-    },
-    {
-      id: 2,
-      title: "Denim Jeans",
-      price: 59.99,
-      description: "Classic blue jeans",
-      category: "Women",
-      image: "/images/products/jeans.jpg",
-      rating: { rate: 4.2, count: 85 },
-      featured: true
-    }
-  ];
 
+  // جلب جميع المنتجات عند تحميل المكون
   useEffect(() => {
-    const timer = setInterval(() => {
-      setCurrentAnnouncement((prev) => (prev + 1) % announcements.length);
-    }, 10000);
-
-    return () => clearInterval(timer);
+    const loadProducts = async () => {
+      setIsLoading(true);
+      try {
+        const products = await fetchProducts();
+        setAllProducts(products);
+      } catch (error) {
+        console.error("Error loading products:", error);
+      } finally {
+        setIsLoading(false);
+      }
+    };
+    
+    loadProducts();
   }, []);
+
+  // دالة البحث مع debounce
+  const handleSearch = useCallback(
+    debounce((query: string) => {
+      if (query.trim() && allProducts.length > 0) {
+        const filtered = allProducts.filter(product =>
+          product.title.toLowerCase().includes(query.toLowerCase()) ||
+          product.category.toLowerCase().includes(query.toLowerCase())
+        );
+        setSearchResults(filtered);
+      } else {
+        setSearchResults([]);
+      }
+    }, 300),
+    [allProducts]
+  );
 
   const handleSearchChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const value = e.target.value;
     setSearchQuery(value);
-    if (value) {
-      const filteredProducts = dummyProducts.filter((product: Product) =>
-        product.title.toLowerCase().includes(value.toLowerCase()) ||
-        product.category.toLowerCase().includes(value.toLowerCase())
-      );
-      setSearchResults(filteredProducts);
-    } else {
-      setSearchResults([]);
-    }
+    handleSearch(value);
+  };
+
+  const closeSearch = () => {
+    setIsSearchOpen(false);
+    setSearchQuery('');
+    setSearchResults([]);
   };
 
   return (
@@ -192,97 +196,105 @@ const Navbar: React.FC = () => {
             </div>
 
             {/* Search Overlay */}
-            {isSearchOpen && (
-              <div className="fixed inset-0 bg-black bg-opacity-50 z-50">
-                <div className="absolute inset-0 overflow-hidden">
-                  <div className="absolute inset-0 bg-transparent" onClick={() => setIsSearchOpen(false)} />
-                  <div className="relative min-h-full">
-                    <div className="bg-white shadow-xl transform transition-all">
-                      <div className="max-w-7xl mx-auto">
-                        {/* Search Input */}
-                        <div className="relative bg-white border-b">
-                          <div className="max-w-3xl mx-auto px-4 py-6">
-                            <div className="relative flex items-center">
-                              <SearchIcon className="absolute left-6 top-1/2 transform -translate-y-1/2 text-gray-400 text-2xl" />
-                              <input
-                                type="text"
-                                value={searchQuery}
-                                onChange={handleSearchChange}
-                                placeholder="Search product..."
-                                className="w-full pl-16 pr-12 py-4 text-xl border-none bg-gray-50 rounded-full focus:outline-none focus:ring-2 focus:ring-[#6f9a37;] focus:bg-white transition-all"
-                                autoFocus
-                              />
-                              <button
-                                onClick={() => setIsSearchOpen(false)}
-                                className="absolute right-6 top-1/2 transform -translate-y-1/2 text-gray-400 text-transparent hover:text-gray-600"
-                              >
-                                <CloseIcon className="text-2xl" />
-                              </button>
-                            </div>
-                          </div>
-                        </div>
-
-                        {/* Search Results */}
-                        <div className="max-w-3xl mx-auto px-4 py-8">
-                          {searchQuery && (
-                            <>
-                              {searchResults.length > 0 ? (
-                                <>
-                                  <h3 className="text-lg font-medium text-gray-900 mb-6">
-                                    Search Results ({searchResults.length})
-                                  </h3>
-                                  <div className="grid grid-cols-1 sm:grid-cols-2 gap-6">
-                                    {searchResults.map((product) => (
-                                      <Link
-                                        key={product.id}
-                                        to={`/product/${product.id}`}
-                                        className="flex items-center p-4 rounded-lg hover:bg-gray-50 border border-gray-100 transition-all"
-                                        onClick={() => setIsSearchOpen(false)}
-                                      >
-                                        <div className="relative w-20 h-20 bg-gray-100 rounded-lg overflow-hidden">
-                                          <img
-                                            src={product.image}
-                                            alt={product.title}
-                                            className="w-full h-full object-cover"
-                                          />
-                                        </div>
-                                        <div className="ml-6 flex-1">
-                                          <h4 className="text-base font-medium text-gray-900 mb-1 line-clamp-1">
-                                            {product.title}
-                                          </h4>
-                                          <p className="text-sm text-gray-500 mb-1">
-                                            {product.category}
-                                          </p>
-                                          <p className="text-lg font-medium text-[#6f9a37;]">
-                                            ${product.price}
-                                          </p>
-                                        </div>
-                                      </Link>
-                                    ))}
-                                  </div>
-                                </>
-                              ) : (
-                                <div className="text-center py-12">
-                                  <div className="text-gray-400 mb-4">
-                                    <SearchIcon style={{ fontSize: 48 }} />
-                                  </div>
-                                  <h3 className="text-lg font-medium text-gray-900 mb-2">
-                                    No products found
-                                  </h3>
-                                  <p className="text-gray-500">
-                                    Try checking your spelling or using different keywords
-                                  </p>
-                                </div>
-                              )}
-                            </>
-                          )}
-                        </div>
-                      </div>
-                    </div>
-                  </div>
+           {isSearchOpen && (
+  <div className="fixed inset-0 bg-black bg-opacity-50 z-50">
+    <div className="absolute inset-0 overflow-hidden">
+      <div className="absolute inset-0 bg-transparent" onClick={closeSearch} />
+      <div className="relative min-h-full">
+        <div className="bg-white shadow-xl transform transition-all">
+          <div className="max-w-7xl mx-auto">
+            {/* Search Input */}
+            <div className="relative bg-white border-b">
+              <div className="max-w-3xl mx-auto px-4 py-6">
+                <div className="relative flex items-center">
+                  <SearchIcon className="absolute left-6 top-1/2 transform -translate-y-1/2 text-gray-400 text-2xl" />
+                  <input
+                    type="text"
+                    value={searchQuery}
+                    onChange={handleSearchChange}
+                    placeholder="Search product..."
+                    className="w-full pl-16 pr-12 py-4 text-xl border-none bg-gray-50 rounded-full focus:outline-none focus:ring-2 focus:ring-[#6f9a37] focus:bg-white transition-all"
+                    autoFocus
+                  />
+                  <button
+                    onClick={closeSearch}
+                    className="absolute right-6 top-1/2 transform -translate-y-1/2 text-gray-400 hover:text-gray-600"
+                  >
+                    <CloseIcon className="text-2xl" />
+                  </button>
                 </div>
               </div>
-            )}
+            </div>
+
+            {/* Search Results */}
+            <div className="max-w-3xl mx-auto px-4 py-8">
+              {isLoading ? (
+                <div className="text-center py-12">
+                  <div className="animate-spin rounded-full h-12 w-12 border-t-2 border-b-2 border-[#6f9a37] mx-auto"></div>
+                </div>
+              ) : searchQuery ? (
+                <>
+                  {searchResults.length > 0 ? (
+                    <>
+                      <h3 className="text-lg font-medium text-gray-900 mb-6">
+                        Search Results ({searchResults.length})
+                      </h3>
+                      <div className="grid grid-cols-1 sm:grid-cols-2 gap-6">
+                        {searchResults.map((product) => (
+                          <Link
+                            key={product.id}
+                            to={`/products/${product.id}`}
+                            className="flex items-center p-4 rounded-lg hover:bg-gray-50 border border-gray-100 transition-all"
+                            onClick={closeSearch}
+                          >
+                            <div className="relative w-20 h-20 bg-gray-100 rounded-lg overflow-hidden">
+                              <img
+                                src={product.image}
+                                alt={product.title}
+                                className="w-full h-full object-contain"
+                                onError={(e) => {
+                                  const target = e.target as HTMLImageElement;
+                                  target.src = '/placeholder-product.jpg';
+                                }}
+                              />
+                            </div>
+                            <div className="ml-6 flex-1">
+                              <h4 className="text-base font-medium text-gray-900 mb-1 line-clamp-1">
+                                {product.title}
+                              </h4>
+                              <p className="text-sm text-gray-500 mb-1 capitalize">
+                                {product.category}
+                              </p>
+                              <p className="text-lg font-medium text-[#6f9a37]">
+                                ${product.price.toFixed(2)}
+                              </p>
+                            </div>
+                          </Link>
+                        ))}
+                      </div>
+                    </>
+                  ) : (
+                    <div className="text-center py-12">
+                      <div className="text-gray-400 mb-4">
+                        <SearchIcon style={{ fontSize: 48 }} />
+                      </div>
+                      <h3 className="text-lg font-medium text-gray-900 mb-2">
+                        No products found
+                      </h3>
+                      <p className="text-gray-500">
+                        Try checking your spelling or using different keywords
+                      </p>
+                    </div>
+                  )}
+                </>
+              ) : null}
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+)}
 
             {/* Right Icons */}
             <div className="flex items-center space-x-4">

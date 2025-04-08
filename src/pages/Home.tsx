@@ -353,7 +353,6 @@ const Home: React.FC = () => {
               <SwiperSlide key={num}>
                 <div className="relative group h-40">
                   {" "}
-                  {/* زيادة ارتفاع الحاوية */}
                   <img
                     src={`/src/assets/images/brand/${num}.jpg`}
                     alt={`Brand ${num}`}
@@ -421,6 +420,8 @@ const Home: React.FC = () => {
           </Swiper>
         </div>
       </section>
+
+
 
       {/* Categories */}
       <CategoriesSection 
