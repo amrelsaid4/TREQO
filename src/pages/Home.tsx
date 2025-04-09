@@ -57,13 +57,7 @@ const slides = [
   },
 ];
 
-const brands = [
-  { id: 1, image: "/images/brands/brand1.png", name: "Brand 1" },
-  { id: 2, image: "/images/brands/brand2.png", name: "Brand 2" },
-  { id: 3, image: "/images/brands/brand3.png", name: "Brand 3" },
-  { id: 4, image: "/images/brands/brand4.png", name: "Brand 4" },
-  { id: 5, image: "/images/brands/brand5.png", name: "Brand 5" },
-];
+
 
 const styles = `
   @keyframes slideInRight {
@@ -125,13 +119,9 @@ styleSheet.innerText = styles;
 document.head.appendChild(styleSheet);
 
 const Home: React.FC = () => {
-  const [currentSlide, setCurrentSlide] = useState(0);
   const [featuredProducts, setFeaturedProducts] = useState<Product[]>([]);
   const [loading, setLoading] = useState(true);
   const [showLoginModal, setShowLoginModal] = useState(false);
-  const { items } = useSelector((state: RootState) => state.cart);
-  const [activeTab, setActiveTab] = useState("featured");
-  const [activeCategory, setActiveCategory] = useState("clothing");
 
   useEffect(() => {
     const hasVisited = localStorage.getItem("hasVisited");
@@ -154,25 +144,8 @@ const Home: React.FC = () => {
     loadFeaturedProducts();
   }, []);
 
-  const getFilteredProducts = () => {
-    if (!featuredProducts || featuredProducts.length === 0) {
-      return [];
-    }
-    return featuredProducts.filter((product) => {
-      if (activeTab === "featured") {
-        return product.featured;
-      }
-      return true;
-    });
-  };
 
-  const nextSlide = () => {
-    setCurrentSlide((prev) => (prev + 1) % slides.length);
-  };
 
-  const prevSlide = () => {
-    setCurrentSlide((prev) => (prev - 1 + slides.length) % slides.length);
-  };
 
   const testimonials = [
     {
@@ -428,30 +401,7 @@ const Home: React.FC = () => {
   products={featuredProducts} 
   loading={loading} 
 />
-      {/* Newsletter */}
-      <section className="bg-[#6f9a37] py-8 md:py-10">
-  <div className="max-w-3xl mx-auto px-4">
-    <div className="text-center text-white">
-      <h2 className="text-xl md:text-2xl font-medium mb-1 md:mb-2">Subscribe For The Newsletter</h2>
-      <p className="text-sm md:text-base text-gray-100 mb-4 md:mb-6">Words To Get Latest Update (Sign Up For Free)</p>
-      <form className="max-w-xs mx-auto">
-        <div className="flex flex-col sm:flex-row gap-2">
-          <input
-            type="email"
-            placeholder="Your email address"
-            className="flex-1 px-3 py-1.5 md:px-4 md:py-2 rounded-sm text-sm text-gray-900 focus:outline-none"
-          />
-          <button
-            type="submit"
-            className="bg-white text-[#6f9a37] px-4 py-1.5 md:px-5 md:py-2 rounded-sm text-sm font-medium hover:bg-gray-50 transition-colors"
-          >
-            Subscribe
-          </button>
-        </div>
-      </form>
-    </div>
-  </div>
-</section>
+     
     </div>
   );
 };

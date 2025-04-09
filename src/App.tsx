@@ -11,6 +11,8 @@ import Cart from './pages/Cart';
 import Checkout from './pages/Checkout';
 import About from './pages/About';
 import Contact from './pages/Contact';
+import Newsletter from './pages/Newsletter';
+import Profile from './pages/Profile';
 
 const App: React.FC = () => {
   return (
@@ -28,8 +30,10 @@ const App: React.FC = () => {
                 <Route path="/checkout" element={<Checkout />} />
                 <Route path="/about" element={<About />} />
                 <Route path="/contact" element={<Contact />} />
+                <Route path="/profile" element={<Profile />} /> 
               </Routes>
             </main>
+            <Newsletter />
             <Footer />
           </div>
         </Router>

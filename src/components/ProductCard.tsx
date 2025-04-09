@@ -46,11 +46,11 @@ const ProductCard: React.FC<ProductCardProps> = ({
         {/* Add to Cart Button */}
         <div
           className="absolute inset-0 bg-transparent group-hover:bg-gradient-to-t from-[#6f9a37]/80 to-transparent transition-all duration-500 ease-in-out flex items-end justify-center pb-6"
-          onClick={(e) => e.preventDefault()} // يمنع تحويل اللينك لما تضغط على الزر
+          onClick={(e) => e.preventDefault()} 
         >
           <button
             onClick={(e) => {
-              e.preventDefault(); // يمنع التنقل
+              e.preventDefault();
               onAddToCart?.();
             }}
             className="w-4/5 text-center transform translate-y-10 opacity-0 group-hover:translate-y-0 group-hover:opacity-100 transition-all duration-500 ease-in-out focus:outline-none"

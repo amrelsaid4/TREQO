@@ -39,7 +39,8 @@ const ProductDetails: React.FC = () => {
 
   const handleAddToCart = () => {
     if (product) {
-      dispatch(addToCart(product));
+      // إضافة المنتج إلى السلة مع تعيين quantity إلى 1
+      dispatch(addToCart({ ...product, quantity: 1 }));
       navigate('/cart');
     }
   };
@@ -50,7 +51,6 @@ const ProductDetails: React.FC = () => {
 
   return (
     <div className="container mx-auto px-4 py-16">
-      {/* Product Details */}
       <div className="grid grid-cols-1 md:grid-cols-2 gap-12 items-center">
         <div className="flex justify-center">
           <img
@@ -74,8 +74,6 @@ const ProductDetails: React.FC = () => {
 
       {/* Divider */}
       <div className="my-16 border-t"></div>
-
-      {/* Related Products */}
       <h2 className="text-2xl font-bold mb-6 text-gray-800">Related Products</h2>
       <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-4 gap-6">
         {related.map((item) => (
@@ -83,9 +81,8 @@ const ProductDetails: React.FC = () => {
         ))}
       </div>
 
-
-         {/* Divider */}
-         <div className="my-16 border-t"></div>
+      {/* Divider */}
+      <div className="my-16 border-t"></div>
     </div>
   );
 };

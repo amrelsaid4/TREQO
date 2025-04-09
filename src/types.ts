@@ -3,7 +3,7 @@ export interface Product {
   title: string;
   description: string;
   price: number;
-  originalPrice?: number; // خليها موجودة هنا بدل `oldPrice`
+  originalPrice?: number; 
   discount?: number;
   image: string;
   category: string;

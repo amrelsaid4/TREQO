@@ -1,53 +1,65 @@
-import React, { useState, useEffect, useCallback } from 'react';
-import { Link } from 'react-router-dom';
-import { useSelector } from 'react-redux';
-import { RootState } from '../store';
-import { Product } from '../types';
-import { fetchProducts } from '../services/api';
-import ShoppingCartIcon from '@mui/icons-material/ShoppingCart';
-import SearchIcon from '@mui/icons-material/Search';
-import PersonOutlineIcon from '@mui/icons-material/PersonOutline';
-import MenuIcon from '@mui/icons-material/Menu';
-import CloseIcon from '@mui/icons-material/Close';
-import LocalOfferIcon from '@mui/icons-material/LocalOffer';
-import { debounce } from '@mui/material';
+import React, { useState, useEffect, useCallback } from "react";
+import { Link } from "react-router-dom";
+import { useSelector } from "react-redux";
+import { RootState } from "../store";
+import { Product } from "../types";
+import { fetchProducts } from "../services/api";
+import ShoppingCartIcon from "@mui/icons-material/ShoppingCart";
+import SearchIcon from "@mui/icons-material/Search";
+import PersonOutlineIcon from "@mui/icons-material/PersonOutline";
+import MenuIcon from "@mui/icons-material/Menu";
+import CloseIcon from "@mui/icons-material/Close";
+import LocalOfferIcon from "@mui/icons-material/LocalOffer";
+import { debounce } from "@mui/material";
+
 
 interface MenuItem {
   [key: string]: string[] | { [key: string]: string[] } | null;
 }
 
 const announcements = [
-  { id: 1, text: "10% OFF on all products! Use code: SALE10", icon: <LocalOfferIcon className="w-4 h-4" /> },
-  { id: 2, text: "Free shipping on orders over $500!", icon: <LocalOfferIcon className="w-4 h-4" /> },
-  { id: 3, text: "New Summer Collection has arrived!", icon: <LocalOfferIcon className="w-4 h-4" /> }
+  {
+    id: 1,
+    text: "10% OFF on all products! Use code: SALE10",
+    icon: <LocalOfferIcon className="w-4 h-4" />,
+  },
+  {
+    id: 2,
+    text: "Free shipping on orders over $500!",
+    icon: <LocalOfferIcon className="w-4 h-4" />,
+  },
+  {
+    id: 3,
+    text: "New Summer Collection has arrived!",
+    icon: <LocalOfferIcon className="w-4 h-4" />,
+  },
 ];
 
 const menuItems: MenuItem = {
   Clothing: {
-    Men: ['T-shirt', 'Jeans', 'Shorts'],
-    Women: ['Western Wear', 'Ethnic Wear', 'Sportswear'],
-    Girls: ['Dresses', 'Skirts', 'Jackets']
+    Men: ["T-shirt", "Jeans", "Shorts"],
+    Women: ["Western Wear", "Ethnic Wear", "Sportswear"],
+    Girls: ["Dresses", "Skirts", "Jackets"],
   },
-  Accessories: ['Belts', 'Gloves', 'Scarves', 'Caps'],
+  Accessories: ["Belts", "Gloves", "Scarves", "Caps"],
   Watches: null,
   Backpacks: null,
-  Blog: null
+  Blog: null,
 };
 
 const Navbar: React.FC = () => {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
   const [currentAnnouncement, setCurrentAnnouncement] = useState(0);
   const [activeMenu, setActiveMenu] = useState<string | null>(null);
-  const [searchQuery, setSearchQuery] = useState('');
+  const [searchQuery, setSearchQuery] = useState("");
   const [searchResults, setSearchResults] = useState<Product[]>([]);
   const [isSearchOpen, setIsSearchOpen] = useState(false);
   const [allProducts, setAllProducts] = useState<Product[]>([]);
   const [isLoading, setIsLoading] = useState(false);
-  
+
   const { items } = useSelector((state: RootState) => state.cart);
   const cartItemsCount = items.length;
-
-  // جلب جميع المنتجات عند تحميل المكون
+  const { user, isAuthenticated } = useSelector((state: RootState) => state.auth);
   useEffect(() => {
     const loadProducts = async () => {
       setIsLoading(true);
@@ -60,17 +72,17 @@ const Navbar: React.FC = () => {
         setIsLoading(false);
       }
     };
-    
+
     loadProducts();
   }, []);
 
-  // دالة البحث مع debounce
   const handleSearch = useCallback(
     debounce((query: string) => {
       if (query.trim() && allProducts.length > 0) {
-        const filtered = allProducts.filter(product =>
-          product.title.toLowerCase().includes(query.toLowerCase()) ||
-          product.category.toLowerCase().includes(query.toLowerCase())
+        const filtered = allProducts.filter(
+          (product) =>
+            product.title.toLowerCase().includes(query.toLowerCase()) ||
+            product.category.toLowerCase().includes(query.toLowerCase())
         );
         setSearchResults(filtered);
       } else {
@@ -88,7 +100,7 @@ const Navbar: React.FC = () => {
 
   const closeSearch = () => {
     setIsSearchOpen(false);
-    setSearchQuery('');
+    setSearchQuery("");
     setSearchResults([]);
   };
 
@@ -103,10 +115,10 @@ const Navbar: React.FC = () => {
                 key={announcement.id}
                 className={`absolute inset-0 flex items-center justify-center transition-all duration-1000 transform ${
                   index === currentAnnouncement
-                    ? 'translate-x-0 opacity-100'
+                    ? "translate-x-0 opacity-100"
                     : index < currentAnnouncement
-                    ? '-translate-x-full opacity-0'
-                    : 'translate-x-full opacity-0'
+                    ? "-translate-x-full opacity-0"
+                    : "translate-x-full opacity-0"
                 }`}
               >
                 <div className="flex items-center gap-2 text-sm font-medium">
@@ -125,9 +137,7 @@ const Navbar: React.FC = () => {
           <div className="flex justify-between items-center h-20">
             {/* Logo */}
             <Link to="/" className="flex-shrink-0">
-              <span className="text-3xl font-bold text-[#6f9a37;]">
-                TREQO
-              </span>
+              <span className="text-3xl font-bold text-[#6f9a37;]">TREQO</span>
             </Link>
 
             {/* Desktop Navigation */}
@@ -142,15 +152,17 @@ const Navbar: React.FC = () => {
                   <Link
                     to={`/${key.toLowerCase()}`}
                     className={`text-gray-700 hover:text-[#6f9a37] py-8 ${
-                      activeMenu === key ? 'text-[#6f9a37;]' : ''
+                      activeMenu === key ? "text-[#6f9a37;]" : ""
                     }`}
                   >
                     {key}
                   </Link>
-                  {subItems && activeMenu === key && key === 'Clothing' && (
+                  {subItems && activeMenu === key && key === "Clothing" && (
                     <div className="absolute top-full left-0 bg-white shadow-lg py-6 w-[600px] z-50">
                       <div className="grid grid-cols-3 gap-4 px-4">
-                        {Object.entries(subItems as Record<string, string[]>).map(([category, items]) => (
+                        {Object.entries(
+                          subItems as Record<string, string[]>
+                        ).map(([category, items]) => (
                           <div key={category} className="flex flex-col">
                             <h3 className="text-base font-bold text-gray-900 mb-2">
                               {category}
@@ -170,144 +182,164 @@ const Navbar: React.FC = () => {
                         ))}
                       </div>
                       <div className="mt-4 px-4">
-                        <img 
-                          src="/src/assets/images/3-0_thumb.jpg" 
-                          alt="Out Fit Fashion" 
+                        <img
+                          src="/src/assets/images/3-0_thumb.jpg"
+                          alt="Out Fit Fashion"
                           className="w-full h-24 object-cover"
                         />
                       </div>
                     </div>
                   )}
-                  {subItems && activeMenu === key && key !== 'Clothing' && Array.isArray(subItems) && (
-                    <div className="absolute top-full left-0 bg-white shadow-lg py-4 w-64 z-50">
-                      {subItems.map((item: string) => (
-                        <Link
-                          key={item}
-                          to={`/${key.toLowerCase()}/${item.toLowerCase()}`}
-                          className="block px-4 py-2 text-gray-600 hover:bg-gray-50 hover:text-[#6f9a37;]"
-                        >
-                          {item}
-                        </Link>
-                      ))}
-                    </div>
-                  )}
+                  {subItems &&
+                    activeMenu === key &&
+                    key !== "Clothing" &&
+                    Array.isArray(subItems) && (
+                      <div className="absolute top-full left-0 bg-white shadow-lg py-4 w-64 z-50">
+                        {subItems.map((item: string) => (
+                          <Link
+                            key={item}
+                            to={`/${key.toLowerCase()}/${item.toLowerCase()}`}
+                            className="block px-4 py-2 text-gray-600 hover:bg-gray-50 hover:text-[#6f9a37;]"
+                          >
+                            {item}
+                          </Link>
+                        ))}
+                      </div>
+                    )}
                 </div>
               ))}
             </div>
 
             {/* Search Overlay */}
-           {isSearchOpen && (
-  <div className="fixed inset-0 bg-black bg-opacity-50 z-50">
-    <div className="absolute inset-0 overflow-hidden">
-      <div className="absolute inset-0 bg-transparent" onClick={closeSearch} />
-      <div className="relative min-h-full">
-        <div className="bg-white shadow-xl transform transition-all">
-          <div className="max-w-7xl mx-auto">
-            {/* Search Input */}
-            <div className="relative bg-white border-b">
-              <div className="max-w-3xl mx-auto px-4 py-6">
-                <div className="relative flex items-center">
-                  <SearchIcon className="absolute left-6 top-1/2 transform -translate-y-1/2 text-gray-400 text-2xl" />
-                  <input
-                    type="text"
-                    value={searchQuery}
-                    onChange={handleSearchChange}
-                    placeholder="Search product..."
-                    className="w-full pl-16 pr-12 py-4 text-xl border-none bg-gray-50 rounded-full focus:outline-none focus:ring-2 focus:ring-[#6f9a37] focus:bg-white transition-all"
-                    autoFocus
-                  />
-                  <button
+            {isSearchOpen && (
+              <div className="fixed inset-0 bg-black bg-opacity-50 z-50">
+                <div className="absolute inset-0 overflow-hidden">
+                  <div
+                    className="absolute inset-0 bg-transparent"
                     onClick={closeSearch}
-                    className="absolute right-6 top-1/2 transform -translate-y-1/2 text-gray-400 hover:text-gray-600"
-                  >
-                    <CloseIcon className="text-2xl" />
-                  </button>
+                  />
+                  <div className="relative min-h-full">
+                    <div className="bg-white shadow-xl transform transition-all">
+                      <div className="max-w-7xl mx-auto">
+                        {/* Search Input */}
+                        <div className="relative bg-white border-b">
+                          <div className="max-w-3xl mx-auto px-4 py-6">
+                            <div className="relative flex items-center">
+                              <SearchIcon className="absolute left-6 top-1/2 transform -translate-y-1/2 text-gray-400 text-2xl" />
+                              <input
+                                type="text"
+                                value={searchQuery}
+                                onChange={handleSearchChange}
+                                placeholder="Search product..."
+                                className="w-full pl-16 pr-12 py-4 text-xl border-none bg-gray-50 rounded-full focus:outline-none focus:ring-2 focus:ring-[#6f9a37] focus:bg-white transition-all"
+                                autoFocus
+                              />
+                              <button
+                                onClick={closeSearch}
+                                className="absolute right-6 top-1/2 transform -translate-y-1/2 text-gray-400 hover:text-gray-600"
+                              >
+                                <CloseIcon className="text-2xl" />
+                              </button>
+                            </div>
+                          </div>
+                        </div>
+
+                        {/* Search Results */}
+                        <div className="max-w-3xl mx-auto px-4 py-8">
+                          {isLoading ? (
+                            <div className="text-center py-12">
+                              <div className="animate-spin rounded-full h-12 w-12 border-t-2 border-b-2 border-[#6f9a37] mx-auto"></div>
+                            </div>
+                          ) : searchQuery ? (
+                            <>
+                              {searchResults.length > 0 ? (
+                                <>
+                                  <h3 className="text-lg font-medium text-gray-900 mb-6">
+                                    Search Results ({searchResults.length})
+                                  </h3>
+                                  <div className="grid grid-cols-1 sm:grid-cols-2 gap-6">
+                                    {searchResults.map((product) => (
+                                      <Link
+                                        key={product.id}
+                                        to={`/products/${product.id}`}
+                                        className="flex items-center p-4 rounded-lg hover:bg-gray-50 border border-gray-100 transition-all"
+                                        onClick={closeSearch}
+                                      >
+                                        <div className="relative w-20 h-20 bg-gray-100 rounded-lg overflow-hidden">
+                                          <img
+                                            src={product.image}
+                                            alt={product.title}
+                                            className="w-full h-full object-contain"
+                                            onError={(e) => {
+                                              const target =
+                                                e.target as HTMLImageElement;
+                                              target.src =
+                                                "/placeholder-product.jpg";
+                                            }}
+                                          />
+                                        </div>
+                                        <div className="ml-6 flex-1">
+                                          <h4 className="text-base font-medium text-gray-900 mb-1 line-clamp-1">
+                                            {product.title}
+                                          </h4>
+                                          <p className="text-sm text-gray-500 mb-1 capitalize">
+                                            {product.category}
+                                          </p>
+                                          <p className="text-lg font-medium text-[#6f9a37]">
+                                            ${product.price.toFixed(2)}
+                                          </p>
+                                        </div>
+                                      </Link>
+                                    ))}
+                                  </div>
+                                </>
+                              ) : (
+                                <div className="text-center py-12">
+                                  <div className="text-gray-400 mb-4">
+                                    <SearchIcon style={{ fontSize: 48 }} />
+                                  </div>
+                                  <h3 className="text-lg font-medium text-gray-900 mb-2">
+                                    No products found
+                                  </h3>
+                                  <p className="text-gray-500">
+                                    Try checking your spelling or using
+                                    different keywords
+                                  </p>
+                                </div>
+                              )}
+                            </>
+                          ) : null}
+                        </div>
+                      </div>
+                    </div>
+                  </div>
                 </div>
               </div>
-            </div>
-
-            {/* Search Results */}
-            <div className="max-w-3xl mx-auto px-4 py-8">
-              {isLoading ? (
-                <div className="text-center py-12">
-                  <div className="animate-spin rounded-full h-12 w-12 border-t-2 border-b-2 border-[#6f9a37] mx-auto"></div>
-                </div>
-              ) : searchQuery ? (
-                <>
-                  {searchResults.length > 0 ? (
-                    <>
-                      <h3 className="text-lg font-medium text-gray-900 mb-6">
-                        Search Results ({searchResults.length})
-                      </h3>
-                      <div className="grid grid-cols-1 sm:grid-cols-2 gap-6">
-                        {searchResults.map((product) => (
-                          <Link
-                            key={product.id}
-                            to={`/products/${product.id}`}
-                            className="flex items-center p-4 rounded-lg hover:bg-gray-50 border border-gray-100 transition-all"
-                            onClick={closeSearch}
-                          >
-                            <div className="relative w-20 h-20 bg-gray-100 rounded-lg overflow-hidden">
-                              <img
-                                src={product.image}
-                                alt={product.title}
-                                className="w-full h-full object-contain"
-                                onError={(e) => {
-                                  const target = e.target as HTMLImageElement;
-                                  target.src = '/placeholder-product.jpg';
-                                }}
-                              />
-                            </div>
-                            <div className="ml-6 flex-1">
-                              <h4 className="text-base font-medium text-gray-900 mb-1 line-clamp-1">
-                                {product.title}
-                              </h4>
-                              <p className="text-sm text-gray-500 mb-1 capitalize">
-                                {product.category}
-                              </p>
-                              <p className="text-lg font-medium text-[#6f9a37]">
-                                ${product.price.toFixed(2)}
-                              </p>
-                            </div>
-                          </Link>
-                        ))}
-                      </div>
-                    </>
-                  ) : (
-                    <div className="text-center py-12">
-                      <div className="text-gray-400 mb-4">
-                        <SearchIcon style={{ fontSize: 48 }} />
-                      </div>
-                      <h3 className="text-lg font-medium text-gray-900 mb-2">
-                        No products found
-                      </h3>
-                      <p className="text-gray-500">
-                        Try checking your spelling or using different keywords
-                      </p>
-                    </div>
-                  )}
-                </>
-              ) : null}
-            </div>
-          </div>
-        </div>
-      </div>
-    </div>
-  </div>
-)}
+            )}
 
             {/* Right Icons */}
             <div className="flex items-center space-x-4">
-              <button 
+              <button
                 className="p-2 hover:text-[#6f9a37;]"
                 onClick={() => setIsSearchOpen(true)}
               >
                 <SearchIcon />
               </button>
-              <Link to="/account" className="p-2 text-black hover:text-[#6f9a37;]">
-                <PersonOutlineIcon />
+              <Link
+                to="/profile"
+                className="p-2 text-black hover:text-[#6f9a37] relative"
+              >
+                <PersonOutlineIcon className="w-6 h-6" />
+                {user && isAuthenticated && (
+                  <span className="absolute -top-1 -right-1 bg-green-500 text-white text-xs w-5 h-5 rounded-full flex items-center justify-center">
+                    ✓
+                  </span>
+                )}
               </Link>
-              <Link to="/cart" className="p-2 text-black hover:text-[#6f9a37;] relative">
+              <Link
+                to="/cart"
+                className="p-2 text-black hover:text-[#6f9a37;] relative"
+              >
                 <ShoppingCartIcon />
                 {cartItemsCount > 0 && (
                   <span className="absolute -top-1 -right-1 bg-[#6f9a37;] text-white text-xs w-5 h-5 rounded-full flex items-center justify-center">
@@ -328,7 +360,7 @@ const Navbar: React.FC = () => {
         {/* Mobile Menu */}
         <div
           className={`md:hidden bg-white ${
-            isMenuOpen ? 'block' : 'hidden'
+            isMenuOpen ? "block" : "hidden"
           } shadow-lg`}
         >
           <div className="px-4 pt-2 pb-4 space-y-2">
@@ -341,40 +373,39 @@ const Navbar: React.FC = () => {
                   <span>{key}</span>
                   {subItems && (
                     <span className="transform transition-transform duration-200">
-                      {activeMenu === key ? '−' : '+'}
+                      {activeMenu === key ? "−" : "+"}
                     </span>
                   )}
                 </div>
                 {subItems && activeMenu === key && (
                   <div className="pl-4">
-                    {typeof subItems === 'object' && !Array.isArray(subItems) ? (
-                      Object.entries(subItems).map(([category, items]) => (
-                        <div key={category} className="py-2">
-                          <div className="px-3 py-2 font-semibold text-gray-800">
-                            {category}
+                    {typeof subItems === "object" && !Array.isArray(subItems)
+                      ? Object.entries(subItems).map(([category, items]) => (
+                          <div key={category} className="py-2">
+                            <div className="px-3 py-2 font-semibold text-gray-800">
+                              {category}
+                            </div>
+                            {items.map((item: string) => (
+                              <Link
+                                key={item}
+                                to={`/${key.toLowerCase()}/${category.toLowerCase()}/${item.toLowerCase()}`}
+                                className="block px-3 py-2 text-gray-600 hover:text-[#6f9a37;]"
+                              >
+                                {item}
+                              </Link>
+                            ))}
                           </div>
-                          {items.map((item: string) => (
-                            <Link
-                              key={item}
-                              to={`/${key.toLowerCase()}/${category.toLowerCase()}/${item.toLowerCase()}`}
-                              className="block px-3 py-2 text-gray-600 hover:text-[#6f9a37;]"
-                            >
-                              {item}
-                            </Link>
-                          ))}
-                        </div>
-                      ))
-                    ) : (
-                      Array.isArray(subItems) && subItems.map((item: string) => (
-                        <Link
-                          key={item}
-                          to={`/${key.toLowerCase()}/${item.toLowerCase()}`}
-                          className="block px-3 py-2 text-gray-600 hover:text-[#6f9a37;]"
-                        >
-                          {item}
-                        </Link>
-                      ))
-                    )}
+                        ))
+                      : Array.isArray(subItems) &&
+                        subItems.map((item: string) => (
+                          <Link
+                            key={item}
+                            to={`/${key.toLowerCase()}/${item.toLowerCase()}`}
+                            className="block px-3 py-2 text-gray-600 hover:text-[#6f9a37;]"
+                          >
+                            {item}
+                          </Link>
+                        ))}
                   </div>
                 )}
               </div>
@@ -386,4 +417,4 @@ const Navbar: React.FC = () => {
   );
 };
 
-export default Navbar; 
+export default Navbar;
