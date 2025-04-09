@@ -1,16 +1,13 @@
 import React, { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
-import { useSelector } from "react-redux";
-import { RootState } from "../store";
 import { Product } from "../types";
 import { fetchProducts } from "../services/api";
-import ProductCard from "../components/ProductCard";
 import { Swiper, SwiperSlide } from "swiper/react";
 import { Autoplay, Navigation, Pagination } from "swiper/modules";
 
 // Import Swiper styles
 import "swiper/swiper-bundle.css";
-import personImage from "../assets/images/person/t.jpg";
+import personImage from "../assets/images/t.jpg";
 
 import LoginModal from "../components/LoginModal";
 import LocalShippingIcon from "@mui/icons-material/LocalShipping";
@@ -150,21 +147,21 @@ const Home: React.FC = () => {
   const testimonials = [
     {
       id: 1,
-      image: "/src/assets/images/person/person1.png",
+      image: "/src/assets/images/person1.png",
       name: "Job Charls",
       role: "Specialist",
       text: "voluptatem that accusantium unde omnis laudantium inventore ametsid of loremipsum.",
     },
     {
       id: 2,
-      image: "/src/assets/images/person/person2.png",
+      image: "/src/assets/images/person2.png",
       name: "Leesa Goec",
       role: "Developer",
       text: "voluptatem that accusantium unde omnis laudantium inventore ametsid of loremipsum.",
     },
     {
       id: 3,
-      image: "/src/assets/images/person/person3.png",
+      image: "/src/assets/images/person3.png",
       name: "Mack Duish",
       role: "Manager",
       text: "voluptatem that accusantium unde omnis laudantium inventore ametsid of loremipsum.",
@@ -173,23 +170,23 @@ const Home: React.FC = () => {
   const collections = [
     {
       title: "Summer Fashion Tips",
-      image: "/src/assets/images/blog/blog1.jpg",
+      image: "/src/assets/images/blog1.jpg",
     },
     {
       title: "New Arrivals Guide",
-      image: "/src/assets/images/blog/blog2.jpg",
+      image: "/src/assets/images/blog2.jpg",
     },
     {
       title: "Style Trends 2025",
-      image: "/src/assets/images/blog/blog3.jpg",
+      image: "/src/assets/images/blog3.jpg",
     },
     {
       title: "Accessory Must-Haves",
-      image: "/src/assets/images/blog/blog4.jpg",
+      image: "/src/assets/images/blog4.jpg",
     },
     {
       title: "Backpack Essentials",
-      image: "/src/assets/images/blog/blog5.jpg",
+      image: "/src/assets/images/blog5.jpg",
     },
   ];
 
@@ -327,7 +324,7 @@ const Home: React.FC = () => {
                 <div className="relative group h-40">
                   {" "}
                   <img
-                    src={`/src/assets/images/brand/${num}.jpg`}
+                    src={`/src/assets/images/${num}.jpg`}
                     alt={`Brand ${num}`}
                     className={`w-full h-full object-contain transition-all duration-300 ${
                       num > 5 ? "opacity-30 filter grayscale" : "opacity-70"
