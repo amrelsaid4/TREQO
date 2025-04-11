@@ -12,7 +12,6 @@ import CloseIcon from "@mui/icons-material/Close";
 import LocalOfferIcon from "@mui/icons-material/LocalOffer";
 import { debounce } from "@mui/material";
 
-
 interface MenuItem {
   [key: string]: string[] | { [key: string]: string[] } | null;
 }
@@ -59,6 +58,7 @@ const Navbar: React.FC = () => {
   const { items } = useSelector((state: RootState) => state.cart);
   const cartItemsCount = items.length;
   const { user, isAuthenticated } = useSelector((state: RootState) => state.auth);
+
   useEffect(() => {
     const loadProducts = async () => {
       setIsLoading(true);
@@ -106,7 +106,7 @@ const Navbar: React.FC = () => {
   return (
     <>
       {/* Top Bar */}
-      <div className="bg-[#6f9a37;] text-white">
+      <div className="bg-[#6f9a37] text-white">
         <div className="max-w-7xl mx-auto">
           <div className="relative overflow-hidden h-10">
             {announcements.map((announcement, index) => (
@@ -134,9 +134,12 @@ const Navbar: React.FC = () => {
       <nav className="bg-white shadow-md relative">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="flex justify-between items-center h-20">
+            {/* Logo */}
             <Link to="/" className="flex-shrink-0">
-              <span className="text-3xl font-bold text-[#6f9a37;]">TREQO</span>
+              <span className="text-3xl font-bold text-[#6f9a37]">TREQO</span>
             </Link>
+
+            {/* Desktop Navigation */}
             <div className="hidden md:flex items-center space-x-8">
               {Object.entries(menuItems).map(([key, subItems]) => (
                 <div
@@ -146,9 +149,9 @@ const Navbar: React.FC = () => {
                   onMouseLeave={() => setActiveMenu(null)}
                 >
                   <Link
-                    to={`/${key.toLowerCase()}`}
+                    to="/products"
                     className={`text-gray-700 hover:text-[#6f9a37] py-8 ${
-                      activeMenu === key ? "text-[#6f9a37;]" : ""
+                      activeMenu === key ? "text-[#6f9a37]" : ""
                     }`}
                   >
                     {key}
@@ -161,14 +164,19 @@ const Navbar: React.FC = () => {
                         ).map(([category, items]) => (
                           <div key={category} className="flex flex-col">
                             <h3 className="text-base font-bold text-gray-900 mb-2">
-                              {category}
+                              <Link 
+                                to="/products"
+                                className="hover:text-[#6f9a37]"
+                              >
+                                {category}
+                              </Link>
                             </h3>
                             <div className="space-y-2">
                               {items.map((item) => (
                                 <Link
                                   key={item}
-                                  to={`/${key.toLowerCase()}/${category.toLowerCase()}/${item.toLowerCase()}`}
-                                  className="block text-sm text-gray-400 hover:text-[#6f9a37;]"
+                                  to="/products"
+                                  className="block text-sm text-gray-400 hover:text-[#6f9a37]"
                                 >
                                   {item}
                                 </Link>
@@ -194,8 +202,8 @@ const Navbar: React.FC = () => {
                         {subItems.map((item: string) => (
                           <Link
                             key={item}
-                            to={`/${key.toLowerCase()}/${item.toLowerCase()}`}
-                            className="block px-4 py-2 text-gray-600 hover:bg-gray-50 hover:text-[#6f9a37;]"
+                            to="/products"
+                            className="block px-4 py-2 text-gray-600 hover:bg-gray-50 hover:text-[#6f9a37]"
                           >
                             {item}
                           </Link>
@@ -217,6 +225,7 @@ const Navbar: React.FC = () => {
                   <div className="relative min-h-full">
                     <div className="bg-white shadow-xl transform transition-all">
                       <div className="max-w-7xl mx-auto">
+                        {/* Search Input */}
                         <div className="relative bg-white border-b">
                           <div className="max-w-3xl mx-auto px-4 py-6">
                             <div className="relative flex items-center">
@@ -315,7 +324,7 @@ const Navbar: React.FC = () => {
             {/* Right Icons */}
             <div className="flex items-center space-x-4">
               <button
-                className="p-2 hover:text-[#6f9a37;]"
+                className="p-2 hover:text-[#6f9a37]"
                 onClick={() => setIsSearchOpen(true)}
               >
                 <SearchIcon />
@@ -333,17 +342,17 @@ const Navbar: React.FC = () => {
               </Link>
               <Link
                 to="/cart"
-                className="p-2 text-black hover:text-[#6f9a37;] relative"
+                className="p-2 text-black hover:text-[#6f9a37] relative"
               >
                 <ShoppingCartIcon />
                 {cartItemsCount > 0 && (
-                  <span className="absolute -top-1 -right-1 bg-[#6f9a37;] text-white text-xs w-5 h-5 rounded-full flex items-center justify-center">
+                  <span className="absolute -top-1 -right-1 bg-[#6f9a37] text-white text-xs w-5 h-5 rounded-full flex items-center justify-center">
                     {cartItemsCount}
                   </span>
                 )}
               </Link>
               <button
-                className="md:hidden p-2 hover:text-[#6f9a37;]"
+                className="md:hidden p-2 hover:text-[#6f9a37]"
                 onClick={() => setIsMenuOpen(!isMenuOpen)}
               >
                 <MenuIcon />
@@ -361,15 +370,20 @@ const Navbar: React.FC = () => {
           <div className="px-4 pt-2 pb-4 space-y-2">
             {Object.entries(menuItems).map(([key, subItems]) => (
               <div key={key} className="py-2">
-                <div
-                  className="flex items-center justify-between px-3 py-2 text-gray-700 hover:text-[#6f9a37;] cursor-pointer"
-                  onClick={() => setActiveMenu(activeMenu === key ? null : key)}
-                >
-                  <span>{key}</span>
+                <div className="flex items-center justify-between">
+                  <Link 
+                    to="/products"
+                    className="px-3 py-2 text-gray-700 hover:text-[#6f9a37] flex-grow"
+                  >
+                    {key}
+                  </Link>
                   {subItems && (
-                    <span className="transform transition-transform duration-200">
+                    <button 
+                      onClick={() => setActiveMenu(activeMenu === key ? null : key)}
+                      className="p-2"
+                    >
                       {activeMenu === key ? "−" : "+"}
-                    </span>
+                    </button>
                   )}
                 </div>
                 {subItems && activeMenu === key && (
@@ -378,13 +392,18 @@ const Navbar: React.FC = () => {
                       ? Object.entries(subItems).map(([category, items]) => (
                           <div key={category} className="py-2">
                             <div className="px-3 py-2 font-semibold text-gray-800">
-                              {category}
+                              <Link 
+                                to="/products"
+                                className="hover:text-[#6f9a37]"
+                              >
+                                {category}
+                              </Link>
                             </div>
                             {items.map((item: string) => (
                               <Link
                                 key={item}
-                                to={`/${key.toLowerCase()}/${category.toLowerCase()}/${item.toLowerCase()}`}
-                                className="block px-3 py-2 text-gray-600 hover:text-[#6f9a37;]"
+                                to="/products"
+                                className="block px-3 py-2 text-gray-600 hover:text-[#6f9a37]"
                               >
                                 {item}
                               </Link>
@@ -395,8 +414,8 @@ const Navbar: React.FC = () => {
                         subItems.map((item: string) => (
                           <Link
                             key={item}
-                            to={`/${key.toLowerCase()}/${item.toLowerCase()}`}
-                            className="block px-3 py-2 text-gray-600 hover:text-[#6f9a37;]"
+                            to="/products"
+                            className="block px-3 py-2 text-gray-600 hover:text-[#6f9a37]"
                           >
                             {item}
                           </Link>
