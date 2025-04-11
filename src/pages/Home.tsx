@@ -16,9 +16,9 @@ import MoneyIcon from "@mui/icons-material/Money";
 import CardGiftcardIcon from "@mui/icons-material/CardGiftcard";
 import TopProducts from "../components/TopProducts";
 import Hero from "../components/Hero";
-import sample1 from "../assets/images/sample-1.jpg";
-import sample2 from "../assets/images/sample-2.jpg";
-import sample3 from "../assets/images/sample-3.jpg";
+import sample1 from "../assets/images/sample/sample-1.jpg";
+import sample2 from "../assets/images/sample/sample-2.jpg";
+import sample3 from "../assets/images/sample/sample-3.jpg";
 import CategoriesSection from "../components/CategoriesSection";
 
 
@@ -147,21 +147,21 @@ const Home: React.FC = () => {
   const testimonials = [
     {
       id: 1,
-      image: "/src/assets/images/person1.png",
+      image: "/src/assets/images/person/person1.png",
       name: "Job Charls",
       role: "Specialist",
       text: "voluptatem that accusantium unde omnis laudantium inventore ametsid of loremipsum.",
     },
     {
       id: 2,
-      image: "/src/assets/images/person2.png",
+      image: "/src/assets/images/person/person2.png",
       name: "Leesa Goec",
       role: "Developer",
       text: "voluptatem that accusantium unde omnis laudantium inventore ametsid of loremipsum.",
     },
     {
       id: 3,
-      image: "/src/assets/images/person3.png",
+      image: "/src/assets/images/person/person3.png",
       name: "Mack Duish",
       role: "Manager",
       text: "voluptatem that accusantium unde omnis laudantium inventore ametsid of loremipsum.",
@@ -170,23 +170,23 @@ const Home: React.FC = () => {
   const collections = [
     {
       title: "Summer Fashion Tips",
-      image: "/src/assets/images/blog1.jpg",
+      image: "/src/assets/images/blog/blog1.jpg",
     },
     {
       title: "New Arrivals Guide",
-      image: "/src/assets/images/blog2.jpg",
+      image: "/src/assets/images/blog/blog2.jpg",
     },
     {
       title: "Style Trends 2025",
-      image: "/src/assets/images/blog3.jpg",
+      image: "/src/assets/images/blog/blog3.jpg",
     },
     {
       title: "Accessory Must-Haves",
-      image: "/src/assets/images/blog4.jpg",
+      image: "/src/assets/images/blog/blog4.jpg",
     },
     {
       title: "Backpack Essentials",
-      image: "/src/assets/images/blog5.jpg",
+      image: "/src/assets/images/blog/blog5.jpg",
     },
   ];
 
@@ -324,7 +324,7 @@ const Home: React.FC = () => {
                 <div className="relative group h-40">
                   {" "}
                   <img
-                    src={`/src/assets/images/${num}.jpg`}
+                    src={`/src/assets/images/brand/${num}.jpg`}
                     alt={`Brand ${num}`}
                     className={`w-full h-full object-contain transition-all duration-300 ${
                       num > 5 ? "opacity-30 filter grayscale" : "opacity-70"

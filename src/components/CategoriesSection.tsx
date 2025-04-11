@@ -10,9 +10,7 @@ interface CategoriesSectionProps {
 const CategoriesSection: React.FC<CategoriesSectionProps> = ({ products, loading }) => {
   const [activeCategory, setActiveCategory] = useState<string>("all");
 
-  // تصنيفات المنتجات مع تعييناتها الصحيحة
   const categories = [
-    { id: "all", name: "All Products" },
     { id: "clothing", name: "Clothing" },
     { id: "women's clothing", name: "Women" },
     { id: "men's clothing", name: "Men" },
@@ -20,7 +18,6 @@ const CategoriesSection: React.FC<CategoriesSectionProps> = ({ products, loading
     { id: "jewelery", name: "Accessories" }
   ];
 
-  // تصفية المنتجات حسب الفئة المختارة
   const filteredProducts = products.filter(product => {
     if (activeCategory === "all") return true;
     if (activeCategory === "clothing") {
@@ -29,16 +26,14 @@ const CategoriesSection: React.FC<CategoriesSectionProps> = ({ products, loading
     return product.category === activeCategory;
   });
 
-  // حساب الخصم (يمكن استبداله ببيانات حقيقية من المنتج)
   const calculateDiscount = (price: number) => {
-    const originalPrice = price + (price * 0.3); // افتراضي: زيادة 30% للسعر الأصلي
+    const originalPrice = price + (price * 0.3);
     return Math.round(((originalPrice - price) / originalPrice) * 100);
   };
 
   return (
     <section className="py-12 bg-gray-50">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-        {/* أزرار الفئات */}
         <div className="flex flex-wrap justify-center gap-4 mb-10">
           {categories.map(category => (
             <button
@@ -61,7 +56,6 @@ const CategoriesSection: React.FC<CategoriesSectionProps> = ({ products, loading
           </div>
         ) : (
           <>
-            {/* شبكة المنتجات */}
             <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
               {filteredProducts.slice(0, 8).map(product => {
                 const discount = product.price < 30 ? calculateDiscount(product.price) : 0;
@@ -70,8 +64,9 @@ const CategoriesSection: React.FC<CategoriesSectionProps> = ({ products, loading
                   : null;
 
                 return (
-                  <div 
-                    key={product.id} 
+                  <Link 
+                    to={`/products/${product.id}`} 
+                    key={product.id}
                     className="bg-white rounded-lg overflow-hidden shadow-md hover:shadow-lg transition-shadow"
                   >
                     <div className="relative">
@@ -105,12 +100,10 @@ const CategoriesSection: React.FC<CategoriesSectionProps> = ({ products, loading
                         )}
                       </div>
                     </div>
-                  </div>
+                  </Link>
                 );
               })}
             </div>
-
-            {/* زر عرض المزيد */}
             <div className="text-center mt-10">
               <Link
                 to="/products"

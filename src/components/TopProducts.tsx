@@ -1,9 +1,8 @@
 import React, { useState, useEffect } from "react";
 import { motion } from "framer-motion";
 import { useNavigate } from "react-router-dom";
-import QuickViewModal from "./QuickViewModal"; // ستحتاج لإنشاء هذا المكون
+import QuickViewModal from "./QuickViewModal"; 
 
-// تعريف نوع المنتج مع السماح بأن يكون rating اختياريًا
 interface Product {
   id: number;
   title: string;

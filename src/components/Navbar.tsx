@@ -44,7 +44,6 @@ const menuItems: MenuItem = {
   Accessories: ["Belts", "Gloves", "Scarves", "Caps"],
   Watches: null,
   Backpacks: null,
-  Blog: null,
 };
 
 const Navbar: React.FC = () => {
@@ -135,12 +134,9 @@ const Navbar: React.FC = () => {
       <nav className="bg-white shadow-md relative">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="flex justify-between items-center h-20">
-            {/* Logo */}
             <Link to="/" className="flex-shrink-0">
               <span className="text-3xl font-bold text-[#6f9a37;]">TREQO</span>
             </Link>
-
-            {/* Desktop Navigation */}
             <div className="hidden md:flex items-center space-x-8">
               {Object.entries(menuItems).map(([key, subItems]) => (
                 <div
@@ -221,7 +217,6 @@ const Navbar: React.FC = () => {
                   <div className="relative min-h-full">
                     <div className="bg-white shadow-xl transform transition-all">
                       <div className="max-w-7xl mx-auto">
-                        {/* Search Input */}
                         <div className="relative bg-white border-b">
                           <div className="max-w-3xl mx-auto px-4 py-6">
                             <div className="relative flex items-center">
