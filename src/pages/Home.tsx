@@ -21,9 +21,6 @@ import sample2 from "../assets/images/sample/sample-2.jpg";
 import sample3 from "../assets/images/sample/sample-3.jpg";
 import CategoriesSection from "../components/CategoriesSection";
 
-
-
-
 const slides = [
   {
     image: sample1,
@@ -53,8 +50,6 @@ const slides = [
     textColor: "text-gray-800",
   },
 ];
-
-
 
 const styles = `
   @keyframes slideInRight {
@@ -141,27 +136,24 @@ const Home: React.FC = () => {
     loadFeaturedProducts();
   }, []);
 
-
-
-
   const testimonials = [
     {
       id: 1,
-      image: "/src/assets/images/person/person1.png",
+      image: "https://demoprestashop.aeipix.com/AX07/futura140/modules/aei_cmstestimony/views/img/person3.png",
       name: "Job Charls",
       role: "Specialist",
       text: "voluptatem that accusantium unde omnis laudantium inventore ametsid of loremipsum.",
     },
     {
       id: 2,
-      image: "/src/assets/images/person/person2.png",
+      image: "https://demoprestashop.aeipix.com/AX07/futura140/modules/aei_cmstestimony/views/img/person1.png",
       name: "Leesa Goec",
       role: "Developer",
       text: "voluptatem that accusantium unde omnis laudantium inventore ametsid of loremipsum.",
     },
     {
       id: 3,
-      image: "/src/assets/images/person/person3.png",
+      image: "https://demoprestashop.aeipix.com/AX07/futura140/modules/aei_cmstestimony/views/img/person2.png",
       name: "Mack Duish",
       role: "Manager",
       text: "voluptatem that accusantium unde omnis laudantium inventore ametsid of loremipsum.",
@@ -170,23 +162,23 @@ const Home: React.FC = () => {
   const collections = [
     {
       title: "Summer Fashion Tips",
-      image: "/src/assets/images/blog/blog1.jpg",
+      image: "https://demoprestashop.aeipix.com/AX07/futura140/modules/aei_cmscategory/views/img/cat-1.jpg",
     },
     {
       title: "New Arrivals Guide",
-      image: "/src/assets/images/blog/blog2.jpg",
+      image: "https://demoprestashop.aeipix.com/AX07/futura140/modules/aei_cmscategory/views/img/cat-2.jpg",
     },
     {
       title: "Style Trends 2025",
-      image: "/src/assets/images/blog/blog3.jpg",
+      image: "https://demoprestashop.aeipix.com/AX07/futura140/modules/aei_cmscategory/views/img/cat-3.jpg",
     },
     {
       title: "Accessory Must-Haves",
-      image: "/src/assets/images/blog/blog4.jpg",
+      image: "https://demoprestashop.aeipix.com/AX07/futura140/modules/aei_cmscategory/views/img/cat-4.jpg",
     },
     {
       title: "Backpack Essentials",
-      image: "/src/assets/images/blog/blog5.jpg",
+      image: "https://demoprestashop.aeipix.com/AX07/futura140/modules/aei_cmscategory/views/img/cat-5.jpg",
     },
   ];
 
@@ -391,14 +383,8 @@ const Home: React.FC = () => {
         </div>
       </section>
 
-
-
       {/* Categories */}
-      <CategoriesSection 
-  products={featuredProducts} 
-  loading={loading} 
-/>
-     
+      <CategoriesSection products={featuredProducts} loading={loading} />
     </div>
   );
 };

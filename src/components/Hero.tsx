@@ -3,7 +3,8 @@ import { Swiper, SwiperSlide } from 'swiper/react';
 import { Autoplay, Navigation, Pagination } from 'swiper/modules';
 import { useNavigate } from 'react-router-dom';
 import 'swiper/swiper-bundle.css';
-import "../index.css"
+import '../index.css';
+
 interface HeroProps {
   slides: {
     image: string;
@@ -32,8 +33,8 @@ const Hero: React.FC<HeroProps> = ({ slides }) => {
   };
 
   const getAnimationClasses = (slide: HeroProps['slides'][0]) => {
-    const baseClasses = `${slide.textColor || 'text-gray-900'} ${
-      slide.contentPosition === 'center' ? 'max-w-2xl text-center px-8' : 'max-w-xl'
+    const baseClasses = `${slide.textColor || 'text-white'} ${
+      slide.contentPosition === 'center' ? 'text-center' : ''
     }`;
 
     if (slide.animation === 'fade') {
@@ -41,7 +42,9 @@ const Hero: React.FC<HeroProps> = ({ slides }) => {
     }
 
     return `${baseClasses} ${
-      slide.contentPosition === 'right' ? 'animate-slideInRight mr-32 pr-8' : 'animate-slideInLeft ml-24'
+      slide.contentPosition === 'right'
+        ? 'animate-slideInRight'
+        : 'animate-slideInLeft'
     }`;
   };
 
@@ -65,27 +68,21 @@ const Hero: React.FC<HeroProps> = ({ slides }) => {
               <img
                 src={slide.image}
                 alt={slide.title}
-                className="w-full h-full object-cover transition-transform duration-500 group-hover:scale-105"
+                className="w-full h-full object-cover"
               />
               <div className={`absolute inset-0 ${slide.overlayStyle || 'bg-black/40'}`} />
             </div>
-            <div className={`absolute inset-0 flex items-center ${getContentPosition(slide.contentPosition)}`}>
-              <div className={getAnimationClasses(slide)}>
-                <h1 className={`text-6xl font-bold mb-4 transition-colors duration-300 group-hover:text-[#82b440] whitespace-nowrap ${
-                  slide.animation === 'fade' ? 'animate-fadeInUp' : ''
-                }`}>
+            <div className={`absolute inset-0 flex items-center ${getContentPosition(slide.contentPosition)} px-3`}>
+              <div className={`w-full max-w-full sm:max-w-lg ${getAnimationClasses(slide)} px-2`}>
+                <h1 className="text-xl sm:text-3xl md:text-5xl font-bold mb-2 text-white group-hover:text-[#82b440]">
                   {slide.title}
                 </h1>
-                <p className={`text-xl mb-8 text-gray-600 ${
-                  slide.animation === 'fade' ? 'animate-fadeInUp animation-delay-200' : ''
-                }`}>
+                <p className="text-xs sm:text-base md:text-lg mb-4 text-white/90">
                   {slide.description}
                 </p>
-                <button 
+                <button
                   onClick={handleShopNow}
-                  className={`bg-black text-white px-8 py-3 rounded-2xl font-medium text-lg transition-all duration-300 hover:bg-[#82b440] ${
-                    slide.animation === 'fade' ? 'animate-fadeInUp animation-delay-400' : ''
-                  }`}
+                  className="bg-white text-black px-4 py-2 rounded-full font-semibold text-sm md:text-lg transition-all duration-300 hover:bg-[#82b440] hover:text-white"
                 >
                   Shop Now
                 </button>
@@ -98,4 +95,4 @@ const Hero: React.FC<HeroProps> = ({ slides }) => {
   );
 };
 
-export default Hero; 
+export default Hero;

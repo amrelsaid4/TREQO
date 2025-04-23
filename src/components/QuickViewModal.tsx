@@ -8,6 +8,15 @@ interface QuickViewModalProps {
 }
 
 const QuickViewModal: React.FC<QuickViewModalProps> = ({ product, onClose, onAddToCart }) => {
+  const handleAddToCartClick = () => {
+    onAddToCart({
+      ...product,
+      quantity: 1,
+      image: product.image || '/placeholder-product.jpg'
+    });
+    onClose();
+  };
+
   return (
     <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50 p-4">
       <div className="bg-white rounded-lg max-w-4xl w-full max-h-[90vh] overflow-y-auto">
@@ -75,10 +84,7 @@ const QuickViewModal: React.FC<QuickViewModalProps> = ({ product, onClose, onAdd
               </div>
 
               <button
-                onClick={() => {
-                  onAddToCart(product);
-                  onClose();
-                }}
+                onClick={handleAddToCartClick}
                 className="bg-green-600 text-white px-6 py-2 rounded-full font-medium hover:bg-green-700 transition w-full"
               >
                 Add to Cart

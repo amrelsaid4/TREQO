@@ -1,7 +1,9 @@
 import React, { useState, useEffect } from "react";
 import { motion } from "framer-motion";
 import { useNavigate } from "react-router-dom";
-import QuickViewModal from "./QuickViewModal"; 
+import { useDispatch } from 'react-redux';
+import { addToCart } from '../features/cartSlice';
+import QuickViewModal from "./QuickViewModal";
 
 interface Product {
   id: number;
@@ -19,13 +21,12 @@ interface Product {
 }
 
 const TopProducts: React.FC = () => {
-  const [activeTab, setActiveTab] = useState<
-    "featured" | "bestsellers" | "new"
-  >("featured");
+  const [activeTab, setActiveTab] = useState<"featured" | "bestsellers" | "new">("featured");
   const [products, setProducts] = useState<Product[]>([]);
   const [loading, setLoading] = useState(true);
   const [selectedProduct, setSelectedProduct] = useState<Product | null>(null);
   const [showQuickView, setShowQuickView] = useState(false);
+  const dispatch = useDispatch();
   const navigate = useNavigate();
 
   useEffect(() => {
@@ -43,7 +44,7 @@ const TopProducts: React.FC = () => {
           category: product.category,
           image: product.image,
           rating: product.rating,
-          isNew: Math.random() > 0.5, 
+          isNew: Math.random() > 0.5,
         }));
 
         setProducts(formattedProducts);
@@ -59,9 +60,7 @@ const TopProducts: React.FC = () => {
 
   const categorizedProducts = {
     featured: products.slice(0, 4),
-    bestsellers: products
-      .slice(4, 8)
-      .map((p) => ({ ...p, rating: { ...p.rating!, rate: 4.5 } })),
+    bestsellers: products.slice(4, 8).map((p) => ({ ...p, rating: { ...p.rating!, rate: 4.5 } })),
     new: products.filter((p) => p.isNew).slice(0, 4),
   };
 
@@ -125,7 +124,7 @@ const TopProducts: React.FC = () => {
 
         {/* Products Grid */}
         <motion.div
-          className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5 gap-6"
+          className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6"
           initial={{ opacity: 0, y: 20 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.5 }}
@@ -240,16 +239,3 @@ const TopProducts: React.FC = () => {
 };
 
 export default TopProducts;
-function addToCart(arg0: {
-  quantity: number; image: string; id: number; title: string; price: number; originalPrice?: number; description: string; category: string; rating?: {
-    rate: number;
-    count: number;
-  }; isNew?: boolean;
-}): any {
-  throw new Error("Function not implemented.");
-}
-
-function dispatch(arg0: any) {
-  throw new Error("Function not implemented.");
-}
-
