@@ -1,5 +1,5 @@
 import React, { useState, useEffect, useCallback } from "react";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import { useSelector } from "react-redux";
 import { RootState } from "../store";
 import { Product } from "../types";
@@ -58,6 +58,7 @@ const Navbar: React.FC = () => {
   const { items } = useSelector((state: RootState) => state.cart);
   const cartItemsCount = items.length;
   const { user, isAuthenticated } = useSelector((state: RootState) => state.auth);
+  const navigate = useNavigate();
 
   useEffect(() => {
     const loadProducts = async () => {
@@ -187,7 +188,7 @@ const Navbar: React.FC = () => {
                       </div>
                       <div className="mt-4 px-4">
                         <img
-                          src="/src/assets/images/3-0_thumb.jpg"
+                          src="https://demoprestashop.aeipix.com/AX07/futura140/img/c/3-0_thumb.jpg"
                           alt="Out Fit Fashion"
                           className="w-full h-24 object-cover"
                         />
@@ -329,9 +330,15 @@ const Navbar: React.FC = () => {
               >
                 <SearchIcon />
               </button>
-              <Link
-                to="/profile"
+              <button
                 className="p-2 text-black hover:text-[#6f9a37] relative"
+                onClick={() => {
+                  if (user && isAuthenticated) {
+                    navigate("/profile");
+                  } else {
+                    navigate("/login");
+                  }
+                }}
               >
                 <PersonOutlineIcon className="w-6 h-6" />
                 {user && isAuthenticated && (
@@ -339,7 +346,7 @@ const Navbar: React.FC = () => {
                     ✓
                   </span>
                 )}
-              </Link>
+              </button>
               <Link
                 to="/cart"
                 className="p-2 text-black hover:text-[#6f9a37] relative"

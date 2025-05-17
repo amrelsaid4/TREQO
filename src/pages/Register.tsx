@@ -1,11 +1,10 @@
 import React, { useState } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import { useDispatch } from 'react-redux';
-import { useTranslation } from 'react-i18next';
 import { loginSuccess } from '../features/authSlice';
+import LoginModal from '../components/LoginModal';
 
 const Register: React.FC = () => {
-  const { t } = useTranslation();
   const dispatch = useDispatch();
   const navigate = useNavigate();
   const [name, setName] = useState('');
@@ -14,6 +13,7 @@ const Register: React.FC = () => {
   const [confirmPassword, setConfirmPassword] = useState('');
   const [error, setError] = useState('');
   const [loading, setLoading] = useState(false);
+  const [showModal, setShowModal] = useState(false);
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
@@ -51,14 +51,14 @@ const Register: React.FC = () => {
       <div className="max-w-md w-full space-y-8">
         <div>
           <h2 className="mt-6 text-center text-3xl font-extrabold text-gray-900">
-            {t('auth.register.title')}
+            Register
           </h2>
         </div>
         <form className="mt-8 space-y-6" onSubmit={handleSubmit}>
           <div className="rounded-md shadow-sm -space-y-px">
             <div>
               <label htmlFor="name" className="sr-only">
-                {t('auth.register.name')}
+                Name
               </label>
               <input
                 id="name"
@@ -68,12 +68,12 @@ const Register: React.FC = () => {
                 value={name}
                 onChange={(e) => setName(e.target.value)}
                 className="appearance-none rounded-none relative block w-full px-3 py-2 border border-gray-300 placeholder-gray-500 text-gray-900 rounded-t-md focus:outline-none focus:ring-primary-500 focus:border-primary-500 focus:z-10 sm:text-sm"
-                placeholder={t('auth.register.name')}
+                placeholder="Name"
               />
             </div>
             <div>
               <label htmlFor="email" className="sr-only">
-                {t('auth.register.email')}
+                Email
               </label>
               <input
                 id="email"
@@ -83,12 +83,12 @@ const Register: React.FC = () => {
                 value={email}
                 onChange={(e) => setEmail(e.target.value)}
                 className="appearance-none rounded-none relative block w-full px-3 py-2 border border-gray-300 placeholder-gray-500 text-gray-900 focus:outline-none focus:ring-primary-500 focus:border-primary-500 focus:z-10 sm:text-sm"
-                placeholder={t('auth.register.email')}
+                placeholder="Email"
               />
             </div>
             <div>
               <label htmlFor="password" className="sr-only">
-                {t('auth.register.password')}
+                Password
               </label>
               <input
                 id="password"
@@ -98,12 +98,12 @@ const Register: React.FC = () => {
                 value={password}
                 onChange={(e) => setPassword(e.target.value)}
                 className="appearance-none rounded-none relative block w-full px-3 py-2 border border-gray-300 placeholder-gray-500 text-gray-900 focus:outline-none focus:ring-primary-500 focus:border-primary-500 focus:z-10 sm:text-sm"
-                placeholder={t('auth.register.password')}
+                placeholder="Password"
               />
             </div>
             <div>
               <label htmlFor="confirmPassword" className="sr-only">
-                {t('auth.register.confirmPassword')}
+                Confirm Password
               </label>
               <input
                 id="confirmPassword"
@@ -113,7 +113,7 @@ const Register: React.FC = () => {
                 value={confirmPassword}
                 onChange={(e) => setConfirmPassword(e.target.value)}
                 className="appearance-none rounded-none relative block w-full px-3 py-2 border border-gray-300 placeholder-gray-500 text-gray-900 rounded-b-md focus:outline-none focus:ring-primary-500 focus:border-primary-500 focus:z-10 sm:text-sm"
-                placeholder={t('auth.register.confirmPassword')}
+                placeholder="Confirm Password"
               />
             </div>
           </div>
@@ -131,7 +131,7 @@ const Register: React.FC = () => {
               {loading ? (
                 <div className="spinner h-5 w-5" />
               ) : (
-                t('auth.register.submit')
+                'Register'
               )}
             </button>
           </div>
@@ -139,16 +139,18 @@ const Register: React.FC = () => {
 
         <div className="text-center">
           <p className="text-sm text-gray-600">
-            {t('auth.register.haveAccount')}{' '}
+            Already have an account?{' '}
             <Link
               to="/login"
               className="font-medium text-primary-600 hover:text-primary-500"
             >
-              {t('auth.register.login')}
+              Login
             </Link>
           </p>
         </div>
       </div>
+
+      <LoginModal isOpen={showModal} onClose={() => setShowModal(false)} />
     </div>
   );
 };

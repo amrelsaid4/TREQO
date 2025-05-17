@@ -311,15 +311,22 @@ const Home: React.FC = () => {
               768: { slidesPerView: 5, spaceBetween: 30 },
             }}
           >
-            {[1, 2, 3, 4, 5, 6, 7, 8].map((num) => (
-              <SwiperSlide key={num}>
+            {[
+              "https://demoprestashop.aeipix.com/AX07/futura140/img/m/1.jpg",
+              "https://demoprestashop.aeipix.com/AX07/futura140/img/m/3.jpg",
+              "https://demoprestashop.aeipix.com/AX07/futura140/img/m/4.jpg",
+              "https://demoprestashop.aeipix.com/AX07/futura140/img/m/5.jpg",
+              "https://demoprestashop.aeipix.com/AX07/futura140/img/m/6.jpg",
+              "https://demoprestashop.aeipix.com/AX07/futura140/img/m/7.jpg",
+              "https://demoprestashop.aeipix.com/AX07/futura140/img/m/8.jpg"
+            ].map((url, index) => (
+              <SwiperSlide key={index}>
                 <div className="relative group h-40">
-                  {" "}
                   <img
-                    src={`/src/assets/images/brand/${num}.jpg`}
-                    alt={`Brand ${num}`}
+                    src={url}
+                    alt={`Brand ${index + 1}`}
                     className={`w-full h-full object-contain transition-all duration-300 ${
-                      num > 5 ? "opacity-30 filter grayscale" : "opacity-70"
+                      index > 4 ? "opacity-30 filter grayscale" : "opacity-70"
                     } group-hover:opacity-100 group-hover:grayscale-0`}
                   />
                 </div>

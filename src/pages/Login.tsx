@@ -18,21 +18,16 @@ const Login: React.FC = () => {
     dispatch(loginStart());
 
     try {
-      // Simulate API call
-      await new Promise((resolve) => setTimeout(resolve, 1000));
+      const res = await fetch('http://localhost:5000/api/login', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ email, password }),
+      });
+      const data = await res.json();
+      if (!res.ok) throw new Error(data.message);
 
-      if (email === 'test@example.com' && password === 'password') {
-        dispatch(
-          loginSuccess({
-            id: '1',
-            name: 'Test User',
-            email: 'test@example.com',
-          })
-        );
-        navigate('/');
-      } else {
-        throw new Error('Invalid credentials');
-      }
+      dispatch(loginSuccess(data.user));
+      navigate('/profile');
     } catch (err) {
       const errorMessage = err instanceof Error ? err.message : 'Login failed';
       setError(errorMessage);

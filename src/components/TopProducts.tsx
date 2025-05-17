@@ -13,7 +13,7 @@ interface Product {
   description: string;
   category: string;
   image: string;
-  rating?: {
+  rating: {
     rate: number;
     count: number;
   };
@@ -43,7 +43,7 @@ const TopProducts: React.FC = () => {
           description: product.description,
           category: product.category,
           image: product.image,
-          rating: product.rating,
+          rating: product.rating || { rate: 0, count: 0 },
           isNew: Math.random() > 0.5,
         }));
 
@@ -60,18 +60,25 @@ const TopProducts: React.FC = () => {
 
   const categorizedProducts = {
     featured: products.slice(0, 4),
-    bestsellers: products.slice(4, 8).map((p) => ({ ...p, rating: { ...p.rating!, rate: 4.5 } })),
+    bestsellers: products.slice(4, 8).map((p) => ({ ...p, rating: { ...p.rating, rate: 4.5 } })),
     new: products.filter((p) => p.isNew).slice(0, 4),
   };
 
   const handleAddToCart = (product: Product) => {
-    dispatch(
-      addToCart({
-        ...product,
-        quantity: 1,
-        image: product.image || "/placeholder-product.jpg",
-      })
-    );
+    const cartItem = {
+      id: product.id,
+      title: product.title,
+      price: product.price,
+      description: product.description,
+      category: product.category,
+      image: product.image || "/placeholder-product.jpg",
+      quantity: 1,
+      rating: product.rating,
+      ...(product.originalPrice && { originalPrice: product.originalPrice }),
+      ...(product.isNew && { isNew: product.isNew }),
+    };
+    
+    dispatch(addToCart(cartItem));
   };
 
   const handleQuickView = (product: Product) => {
@@ -187,29 +194,27 @@ const TopProducts: React.FC = () => {
                     </>
                   )}
                 </div>
-                {product.rating && (
-                  <div className="flex items-center mt-1">
-                    <div className="flex text-yellow-400">
-                      {[...Array(5)].map((_, i) => (
-                        <svg
-                          key={i}
-                          className={`w-4 h-4 fill-current ${
-                            i < Math.floor(product.rating.rate)
-                              ? "text-yellow-400"
-                              : "text-gray-300"
-                          }`}
-                          xmlns="http://www.w3.org/2000/svg"
-                          viewBox="0 0 20 20"
-                        >
-                          <path d="M10 15l-5.878 3.09 1.123-6.545L.489 6.91l6.572-.955L10 0l2.939 5.955 6.572.955-4.756 4.635 1.123 6.545z" />
-                        </svg>
-                      ))}
-                    </div>
-                    <span className="text-gray-500 text-xs ml-1">
-                      ({product.rating.count})
-                    </span>
+                <div className="flex items-center mt-1">
+                  <div className="flex text-yellow-400">
+                    {[...Array(5)].map((_, i) => (
+                      <svg
+                        key={i}
+                        className={`w-4 h-4 fill-current ${
+                          i < Math.floor(product.rating.rate)
+                            ? "text-yellow-400"
+                            : "text-gray-300"
+                        }`}
+                        xmlns="http://www.w3.org/2000/svg"
+                        viewBox="0 0 20 20"
+                      >
+                        <path d="M10 15l-5.878 3.09 1.123-6.545L.489 6.91l6.572-.955L10 0l2.939 5.955 6.572.955-4.756 4.635 1.123 6.545z" />
+                      </svg>
+                    ))}
                   </div>
-                )}
+                  <span className="text-gray-500 text-xs ml-1">
+                    ({product.rating.count})
+                  </span>
+                </div>
               </div>
             </div>
           ))}
